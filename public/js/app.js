@@ -73,7 +73,16 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', function($scope, $http,
     }
   })
   .success(function(response) {
-    console.log(response);
+
+    response['messages'] = response.messages.map(function(obj){
+      // date part
+      var d = new Date(obj.messageDate);
+      var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+      obj['replyDateStr'] = dStr;
+
+      return obj;
+    });
+
     vm.post = response;
   });
 }]);

@@ -8,6 +8,26 @@ blockquote {
   padding: 10px 15px;
 }
 
+.small-font {
+  font-size: 8px;
+}
+
+.normal-font {
+
+}
+
+.big-font {
+  font-size: 24px;
+}
+
+.ultra-font {
+  font-size: 34px;
+}
+
+.weak-text {
+  color: #a3a3a3;
+}
+
 .badge:hover {
   color: #ffffff;
   text-decoration: none;

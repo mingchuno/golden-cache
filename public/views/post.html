@@ -1,14 +1,44 @@
-<a class="btn btn-warning" ui-sref='topics({page:1})'>Home</a>
-<h1>
-  {{vm.post.messageTitle}}
-  <span class="badge badge-success">Good: {{vm.post.ratingGood}}</span>
-  <span class="badge badge-error">Bad: {{vm.post.ratingBad}}</span>
-</h1>
+<div class="page-header">
 
-<ul class="list-group">
+  <div class="row">
+    <div class="col-md-8">
+      <a class="btn btn-warning" ui-sref='topics({page:1})'>吹水台</a>
+    </div>
+    <div class="col-md-4 text-right">
+      <!-- Font -->
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" ng-click="fontClass='small-font'">細</button>
+        <button type="button" class="btn btn-default" ng-click="fontClass='normal-font'">正常</button>
+        <button type="button" class="btn btn-default" ng-click="fontClass='big-font'">大</button>
+        <button type="button" class="btn btn-default" ng-click="fontClass='ultra-font'">超大</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>
+    {{vm.post.messageTitle}}
+    <span class="badge badge-success">Good: {{vm.post.ratingGood}}</span>
+    <span class="badge badge-error">Bad: {{vm.post.ratingBad}}</span>
+  </h2>
+</div>
+
+<ul class="list-group" ng-init="fontClass='normal-font'">
   <li class="list-group-item" ng-repeat="message in vm.post.messages">
-    <div><h4><span ng-class="{'M':'label-primary', 'F':'label-danger'}[message.authorGender]" class="label"><strong>{{message.authorName}}</strong></span></h4></div>
-    <div ng-bind-html="message.messageBody"></div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <h4>
+          <span ng-class="{'M':'label-primary', 'F':'label-danger'}[message.authorGender]" class="label">
+            <strong>{{message.authorName}}</strong>
+          </span>
+        </h4>
+      </div>
+      <div class="col-md-4">
+        <p class="text-right weak-text">{{message.replyDateStr}}</p>
+      </div>
+    </div>
+
+    <div ng-class="fontClass" ng-bind-html="message.messageBody"></div>
   </li>
 </ul>
 
