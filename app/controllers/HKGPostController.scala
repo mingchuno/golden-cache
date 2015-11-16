@@ -26,8 +26,8 @@ class HKGPostController @Inject() (
     }
   }
 
-  def getTopicsRest(page: Int) = Action.async {
-    getTopis(page).map {
+  def getTopicsRest(page: Int, channel: String) = Action.async {
+    getTopis(page, channel).map {
       case Some(topics) =>
         Ok(Json.toJson(topics))
       case None =>

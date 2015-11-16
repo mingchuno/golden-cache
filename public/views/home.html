@@ -8,10 +8,15 @@
 </tr>
 <tr ng-repeat="topic in topics">
   <td>{{topic.rating}}</td>
-  <td><a ui-sref='test({messageId: topic.messageId, page: 1})'>{{topic.messageTitle}}</a></td>
+  <td>
+    <a ui-sref='post({messageId: topic.messageId, page: 1})'>{{topic.messageTitle}}</a>
+    <span ng-repeat="page in topic.pages">
+      <a ui-sref='post({messageId: topic.messageId, page: page})'>[{{page}}]</a>
+    </span>
+  </td>
   <td>{{topic.authorName}}</td>
   <td>{{topic.totalReplies}}</td>
-  <td>{{topic.lastReplyDate}}</td>
+  <td>{{topic.lastReplyDateString}}</td>
 </tr>
 </table>
 <nav>

@@ -1,5 +1,9 @@
 <a class="btn btn-warning" ui-sref='topics({page:1})'>Home</a>
-<h1>{{vm.post.messageTitle}}</h1>
+<h1>
+  {{vm.post.messageTitle}}
+  <span class="badge badge-success">Good: {{vm.post.ratingGood}}</span>
+  <span class="badge badge-error">Bad: {{vm.post.ratingBad}}</span>
+</h1>
 
 <ul class="list-group">
   <li class="list-group-item" ng-repeat="message in vm.post.messages">
@@ -8,4 +12,4 @@
   </li>
 </ul>
 
-<a class="btn btn-warning" ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='test({messageId: vm.post.messageId, page: vm.post.currentPages + 1})'>Next</a>
+<a class="btn btn-warning" ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='post({messageId: vm.post.messageId, page: vm.post.currentPages + 1})'>Next</a>
