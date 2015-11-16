@@ -1,0 +1,30 @@
+<table class="table table-striped">
+<tr>
+  <th>評分</th>
+  <th>題目</th> 
+  <th>作者</th>
+  <th>回覆</th>
+  <th>最後回覆</th>
+</tr>
+<tr ng-repeat="topic in topics">
+  <td>{{topic.rating}}</td>
+  <td><a ui-sref='test({messageId: topic.messageId, page: 1})'>{{topic.messageTitle}}</a></td>
+  <td>{{topic.authorName}}</td>
+  <td>{{topic.totalReplies}}</td>
+  <td>{{topic.lastReplyDate}}</td>
+</tr>
+</table>
+<nav>
+  <ul class="pagination">
+    <li ng-hide="hidePrev">
+      <a ui-sref='topics({page: prevPage})' aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li>
+      <a ui-sref='topics({page: nextPage})' aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

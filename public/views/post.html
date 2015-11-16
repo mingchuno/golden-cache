@@ -1,0 +1,11 @@
+<a class="btn btn-warning" ui-sref='topics({page:1})'>Home</a>
+<h1>{{vm.post.messageTitle}}</h1>
+
+<ul class="list-group">
+  <li class="list-group-item" ng-repeat="message in vm.post.messages">
+    <div><h4><span class="label label-default"><strong>{{message.authorName}}</strong></span></h4></div>
+    <div ng-bind-html="message.messageBody"></div>
+  </li>
+</ul>
+
+<a class="btn btn-warning" ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='test({messageId: vm.post.messageId, page: vm.post.currentPages + 1})'>Next</a>

@@ -1,0 +1,14 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET         /                                controllers.ApplicationController.index()
+
+# HKG Cache
+GET         /api/v1/post                     controllers.HKGPostController.getPostRest(messageId:Int, page: Int)
+GET         /api/v1/topics                   controllers.HKGPostController.getTopicsRest(page: Int ?= 1)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file                    controllers.Assets.at(path="/public", file)
+GET         /faces/*file                     controllers.Assets.at(path="/public/images/faces", file)
