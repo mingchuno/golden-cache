@@ -5,20 +5,21 @@
  */
 var app = angular.module('hkgApp', [
   'ui.router',
-  'ngSanitize'
+  'ngSanitize',
+  'angular-loading-bar'
 ]);
 
 /**
  * The application routing.
  */
-app.config(function ($urlRouterProvider, $stateProvider, $httpProvider) {
+app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
 
   $urlRouterProvider.otherwise('/topics/1');
 
   $stateProvider
     .state('topics', { url: '/topics/:page', templateUrl: '/assets/views/home.html',controller: 'HomeCtrl'})
     .state('post', { url: '/post/:messageId/:page', templateUrl: '/assets/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
-}); 
+}]); 
 
 /**
  * The home controller.

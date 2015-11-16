@@ -26,7 +26,5 @@ class ApplicationController @Inject() (val messagesApi: MessagesApi) extends Con
    *
    * @return The result to display.
    */
-  def index = Action { implicit request =>
-    Ok(views.html.index())
-  }
+  def index = Assets.at(path="/public", "index.html")
 }
