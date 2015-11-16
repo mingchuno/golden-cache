@@ -16,3 +16,6 @@ dist
 bin
 /.cache
 /.target
+*.ipr
+*.iws
+
