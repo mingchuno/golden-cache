@@ -13,7 +13,9 @@
   <th>最後回覆</th>
 </tr>
 <tr ng-repeat="topic in topics">
-  <td>{{topic.rating}}</td>
+  <td ng-style="topic.rating > 0 && {'color': 'green'} ||
+                topic.rating < 0 && {'color': 'red'}  ||
+                topic.rating == 0 && {'color': '#333'}">{{topic.rating}}</td>
   <td>
     <a ui-sref='post({messageId: topic.messageId, page: 1})'>{{topic.messageTitle}}</a>
     <span ng-repeat="page in topic.pages">

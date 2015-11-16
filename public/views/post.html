@@ -2,7 +2,11 @@
 
   <div class="row">
     <div class="col-md-8">
-      <a class="btn btn-warning" ui-sref='topics({page:1})'>吹水台</a>
+      <!-- <a class="btn btn-warning" ui-sref='topics({page:1})'>吹水台</a> -->
+      <ol class="breadcrumb">
+        <li><a ui-sref='topics({page:1})'>高登主頁</a></li>
+        <li><a ui-sref='topics({page:1})'>吹水台</a></li>
+      </ol>
     </div>
     <div class="col-md-4 text-right">
       <!-- Font -->
@@ -42,4 +46,18 @@
   </li>
 </ul>
 
-<a class="btn btn-warning" ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='post({messageId: vm.post.messageId, page: vm.post.currentPages + 1})'>Next</a>
+<nav>
+  <ul class="pagination">
+    <li>
+      <a ng-show="vm.post.currentPages != 1" ui-sref='post({messageId: vm.post.messageId, page: vm.post.currentPages - 1})' aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li>
+      <a ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='post({messageId: vm.post.messageId, page: vm.post.currentPages + 1})' aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

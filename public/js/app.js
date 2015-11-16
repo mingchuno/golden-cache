@@ -21,6 +21,12 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
     .state('post', { url: '/post/:messageId/:page', templateUrl: '/assets/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
 }]); 
 
+app.filter('num', function() {
+    return function(input) {
+      return parseInt(input, 10);
+    };
+});
+
 /**
  * The home controller.
  */
@@ -34,10 +40,16 @@ app.controller('HomeCtrl', ['$http', '$scope', '$state', function($http, $scope,
   }).success(function(response) {
     var reformattedObject = response.topicList.map(function(obj){ 
         // each topic
-        var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
+        // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
+        var maxPage = parseInt(obj.totalReplies / 25) + 1;
         console.log("----max page is-----");
         console.log(maxPage);
-        var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
+        if (maxPage <= 12) {
+          var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
+        } else {
+          var pageArray = [1,2,3,4,5,6].concat(Array.apply(null, Array(6)).map(function (_, i) {return maxPage - i;}).reverse());
+        }
+        // var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
         obj['pages'] = pageArray;
 
         // date part
@@ -73,7 +85,6 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', function($scope, $http,
     }
   })
   .success(function(response) {
-
     response['messages'] = response.messages.map(function(obj){
       // date part
       var d = new Date(obj.messageDate);
