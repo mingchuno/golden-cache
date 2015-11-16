@@ -11,6 +11,8 @@ class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
 
   implicit val ec = context.dispatcher
 
+  val parent = context.parent
+
   override def preStart() = {
     log.info("starting HKGPostGrabberActor")
   }
@@ -18,13 +20,21 @@ class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
   def receive = {
     case GrabJob(messageId, page) =>
       log.info(s"receive some job with id $messageId and page $page")
-      grabNewPostAndSave(messageId, page).foreach {
+      getPostFromDBOrFallBack(messageId, page).foreach {
         case None =>
+          // wait some time be4 retry
+          log.info(s"[HAHAHA]going to retry with id $messageId and page $page")
+          context.system.scheduler.scheduleOnce(30 second, parent, GrabJob(messageId, page))
+
         case Some(post) =>
           if (post.currentPages < post.totalPages) {
-            context.system.scheduler.scheduleOnce(1 second, self, GrabJob(messageId, page + 1))
+            context.system.scheduler.scheduleOnce(1 second, parent, GrabJob(messageId, page + 1))
+          } else {
+            log.info(s"going to retry with id $messageId and page $page")
+            context.system.scheduler.scheduleOnce(30 second, parent, GrabJob(messageId, page))
           }
       }
+
     case _ =>
   }
 }
