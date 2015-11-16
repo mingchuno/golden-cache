@@ -7,7 +7,7 @@
 
 <ul class="list-group">
   <li class="list-group-item" ng-repeat="message in vm.post.messages">
-    <div><h4><span class="label label-default"><strong>{{message.authorName}}</strong></span></h4></div>
+    <div><h4><span ng-class="{'M':'label-primary', 'F':'label-danger'}[message.authorGender]" class="label"><strong>{{message.authorName}}</strong></span></h4></div>
     <div ng-bind-html="message.messageBody"></div>
   </li>
 </ul>
