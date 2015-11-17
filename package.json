@@ -1,0 +1,16 @@
+{
+  "name": "play-silhouette-angular-seed",
+  "version": "0.0.0",
+  "dependencies": {
+    "bower": "^1.6.5",
+    "grunt-cli": "^0.1.13"
+  },
+  "devDependencies": {
+    "yo": "~1.5.0"
+  },
+  "engines": {
+    "node": "4.2.x"
+  },
+  "scripts": {
+  }
+}

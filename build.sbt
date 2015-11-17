@@ -1,4 +1,4 @@
-// import com.tuplejump.sbt.yeoman.Yeoman
+import com.tuplejump.sbt.yeoman.Yeoman
 // import scalariform.formatter.preferences._
 
 name := "golden-cache"
@@ -56,7 +56,7 @@ scalacOptions ++= Seq(
 //********************************************************
 // Yeoman settings
 //********************************************************
-// Yeoman.yeomanSettings
+Yeoman.yeomanSettings
 
 //********************************************************
 // Scalariform settings

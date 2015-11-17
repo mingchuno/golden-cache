@@ -17,8 +17,8 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
   $urlRouterProvider.otherwise('/topics/1');
 
   $stateProvider
-    .state('topics', { url: '/topics/:page', templateUrl: '/assets/views/home.html',controller: 'HomeCtrl'})
-    .state('post', { url: '/post/:messageId/:page', templateUrl: '/assets/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
+    .state('topics', { url: '/topics/:page', templateUrl: '/views/topics.html',controller: 'TopicsCtrl'})
+    .state('post', { url: '/post/:messageId/:page', templateUrl: '/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
 }]); 
 
 app.filter('num', function() {
@@ -30,7 +30,7 @@ app.filter('num', function() {
 /**
  * The home controller.
  */
-app.controller('HomeCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
+app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
   $http({
     url: "/api/v1/topics",
     method: 'GET',

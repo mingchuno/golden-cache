@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET         /                                controllers.ApplicationController.index()
+GET         /                                com.tuplejump.playYeoman.Yeoman.index
 
 # HKG Cache
 GET         /api/v1/post                     controllers.HKGPostController.getPostRest(messageId:Int, page: Int)
@@ -12,3 +12,5 @@ GET         /api/v1/topics                   controllers.HKGPostController.getTo
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.at(path="/public", file)
 GET         /faces/*file                     controllers.Assets.at(path="/public/images/faces", file)
+
+->          /                                yeoman.Routes
