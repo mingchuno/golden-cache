@@ -6,7 +6,7 @@ import akka.contrib.throttle._
 
 import scala.concurrent.duration._
 
-class HKPostGrabberMiddleMan extends Actor with ActorLogging {
+class HKGPostGrabberMiddleMan extends Actor with ActorLogging {
   val worker = context.actorOf(HKGPostGrabberWorker.props, "hkg-post-grabber")
 
   // move to config later
