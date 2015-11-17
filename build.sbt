@@ -3,7 +3,7 @@ import com.tuplejump.sbt.yeoman.Yeoman
 
 name := "golden-cache"
 
-version := "1.2.0-SNAPSHOT"
+version := "1.2.1-SNAPSHOT"
 
 scalaVersion := "2.11.7"
 
