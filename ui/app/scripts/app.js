@@ -30,7 +30,7 @@ app.filter('num', function() {
 /**
  * The home controller.
  */
-app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scope, $state) {
+app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', function($http, $scope, $state, $window) {
   $http({
     url: "/api/v1/topics",
     method: 'GET',
@@ -38,7 +38,7 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scop
       page: $state.params.page
     }
   }).success(function(response) {
-    var reformattedObject = response.topicList.map(function(obj){ 
+    var reformattedObject = response.topicList.map(function(obj){
         // each topic
         // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
         var maxPage = parseInt(obj.totalReplies / 25) + 1;
@@ -59,6 +59,9 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scop
         return obj;
     });
 
+    // hard code now
+    $window.document.title = '吹水台 - HKG Cache v1.2.1 [Beta]';
+
     $scope.topics = reformattedObject;
     $scope.nextPage = parseInt($state.params.page) + 1;
     $scope.prevPage = parseInt($state.params.page) - 1;
@@ -71,7 +74,7 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scop
 /**
  * The post controller
  */
-app.controller("PostCtrl", ['$scope', '$http', '$state', function($scope, $http, $state) {
+app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($scope, $http, $state, $window) {
   $scope.vm = this;
   var vm = $scope.vm;
 
@@ -92,6 +95,10 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', function($scope, $http,
 
       return obj;
     });
+
+    console.log(response);
+
+    $window.document.title = response.messageTitle + ' - HKG Cache v1.2.1 [Beta]';
 
     vm.post = response;
   });
