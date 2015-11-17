@@ -1,0 +1,20 @@
+web:
+  build: .
+  expose:
+    - "9000"
+  volumes:
+   - .:/code
+  links:
+   - mongo
+
+mongo:
+  build: ./deploy
+
+nginx:
+  image: nginx
+  ports:
+    - "8080:80"
+  volumes:
+    - ./deploy/nginx.conf:/etc/nginx/nginx.conf:ro
+  links:
+    - web
