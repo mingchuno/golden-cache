@@ -2,11 +2,6 @@ package controllers
 
 import javax.inject.Inject
 
-// import com.mohiva.play.silhouette.api.{Environment, LogoutEvent, Silhouette}
-// import com.mohiva.play.silhouette.impl.authenticators.CookieAuthenticator
-// import com.mohiva.play.silhouette.impl.providers.SocialProviderRegistry
-// import forms._
-// import models.User
 import play.api.mvc._
 import play.api.i18n.MessagesApi
 
