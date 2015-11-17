@@ -42,20 +42,19 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', function($http, $scop
         // each topic
         // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
         var maxPage = parseInt(obj.totalReplies / 25) + 1;
-        console.log("----max page is-----");
-        console.log(maxPage);
+        // console.log("----max page is-----");
+        // console.log(maxPage);
         if (maxPage <= 12) {
           var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
         } else {
           var pageArray = [1,2,3,4,5,6].concat(Array.apply(null, Array(6)).map(function (_, i) {return maxPage - i;}).reverse());
         }
-        // var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
-        obj['pages'] = pageArray;
+        obj.pages = pageArray;
 
         // date part
         var d = new Date(obj.lastReplyDate);
         var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-        obj['lastReplyDateString'] = dStr;
+        obj.lastReplyDateString = dStr;
 
         return obj;
     });
@@ -85,11 +84,11 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', function($scope, $http,
     }
   })
   .success(function(response) {
-    response['messages'] = response.messages.map(function(obj){
+    response.messages = response.messages.map(function(obj){
       // date part
       var d = new Date(obj.messageDate);
       var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-      obj['replyDateStr'] = dStr;
+      obj.replyDateStr = dStr;
 
       return obj;
     });
