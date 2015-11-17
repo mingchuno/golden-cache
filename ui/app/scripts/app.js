@@ -96,8 +96,6 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
       return obj;
     });
 
-    console.log(response);
-
     $window.document.title = response.messageTitle + ' - HKG Cache v1.2.1 [Beta]';
 
     vm.post = response;
