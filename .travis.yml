@@ -1,6 +1,8 @@
-language: scala
-jdk: oraclejdk8
 sudo: false
-matrix:
-  include:
-    - scala: 2.11.7
+language: scala
+jdk: 
+ - oraclejdk8
+scala: 
+ - 2.11.7
+services:
+  - mongodb
