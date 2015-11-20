@@ -4,7 +4,6 @@ import actors.HKGPostGrabberWorker.GrabJob
 import akka.actor._
 import service.HKGPostGrabber
 
-// import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
 class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
@@ -22,16 +21,13 @@ class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
       log.info(s"receive some job with id $messageId and page $page")
       getPostFromDBOrFallBack(messageId, page).foreach {
         case None =>
-          // wait some time be4 retry
-          log.info(s"[HAHAHA]going to retry with id $messageId and page $page")
-          context.system.scheduler.scheduleOnce(30 second, parent, GrabJob(messageId, page))
+          log.warning("cannot found post!")
 
         case Some(post) =>
           if (post.currentPages < post.totalPages) {
             context.system.scheduler.scheduleOnce(1 second, parent, GrabJob(messageId, page + 1))
           } else {
-            log.info(s"going to retry with id $messageId and page $page")
-            context.system.scheduler.scheduleOnce(30 second, parent, GrabJob(messageId, page))
+            log.info("post.currentPages >= post.totalPages and do nothing!")
           }
       }
 
