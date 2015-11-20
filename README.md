@@ -1,6 +1,8 @@
 HKG cache
 =====================================
 
+[![Build Status](https://travis-ci.org/mingchuno/golden-cache.svg?branch=develop)](https://travis-ci.org/mingchuno/golden-cache)
+
 HKG is too slow. This is a cache backend + frontend written in Scala Play! and AngularJs
 
 # How to start dev?
