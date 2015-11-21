@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>./logs/golden-cache.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- daily rollover -->
+        <fileNamePattern>./logs/golden-cache.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>20MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+      </rollingPolicy>
+
+    <encoder>
+      <pattern>%date{YYYY-MM-dd HH:mm:ss:SSS} %level [%logger{10}] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%date{YYYY-MM-dd HH:mm:ss:SSS} %level [%logger{10}] %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <logger name="play" level="INFO" />
+  <logger name="application" level="INFO" />
+
+  <root level="DEBUG">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>

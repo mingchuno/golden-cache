@@ -22,8 +22,8 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 
 # TODO
 
-- Docker integration
-- Travis CI integration
+- Docker integration (1/2)
+- Travis CI integration (1/2)
 - backend write test
 - front end write test
 - seperate View, Controller and Service logic in frontend

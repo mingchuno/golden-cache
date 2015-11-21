@@ -16,29 +16,28 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 
   $urlRouterProvider.otherwise('/topics/1');
 
+  $httpProvider.useLegacyPromiseExtensions(false);
+
   $stateProvider
     .state('topics', { url: '/topics/:page', templateUrl: '/views/topics.html',controller: 'TopicsCtrl'})
+    .state('notFound', { url: '/404', templateUrl: '/404.html'})
     .state('post', { url: '/post/:messageId/:page', templateUrl: '/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
 }]); 
-
-app.filter('num', function() {
-    return function(input) {
-      return parseInt(input, 10);
-    };
-});
 
 /**
  * The home controller.
  */
 app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', function($http, $scope, $state, $window) {
+
   $http({
     url: "/api/v1/topics",
     method: 'GET',
     params: {
       page: $state.params.page
     }
-  }).success(function(response) {
-    var reformattedObject = response.topicList.map(function(obj){
+  }).
+  then(function(response){
+    var reformattedObject = response.data.topicList.map(function(obj){
         // each topic
         // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
         var maxPage = parseInt(obj.totalReplies / 25) + 1;
@@ -60,15 +59,15 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', function($
     });
 
     // hard code now
-    $window.document.title = '吹水台 - HKG Cache v1.2.1 [Beta]';
+    $window.document.title = '吹水台 - HKG Cache v1.2.2 [Beta]';
 
     $scope.topics = reformattedObject;
     $scope.nextPage = parseInt($state.params.page) + 1;
     $scope.prevPage = parseInt($state.params.page) - 1;
     $scope.hidePrev = $state.params.page == 1;
-
+  }, function(response) {
+      $state.go('notFound')
   });
-
 }]);
 
 /**
@@ -85,9 +84,9 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
       messageId: $state.params.messageId,
       page: $state.params.page
     }
-  })
-  .success(function(response) {
-    response.messages = response.messages.map(function(obj){
+  }).
+  then(function(response){
+    response.data.messages = response.data.messages.map(function(obj){
       // date part
       var d = new Date(obj.messageDate);
       var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
@@ -96,8 +95,10 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
       return obj;
     });
 
-    $window.document.title = response.messageTitle + ' - HKG Cache v1.2.1 [Beta]';
+    $window.document.title = response.data.messageTitle + ' - HKG Cache v1.2.2 [Beta]';
 
-    vm.post = response;
+    vm.post = response.data;
+  }, function(response){
+    $state.go('notFound')
   });
 }]);
