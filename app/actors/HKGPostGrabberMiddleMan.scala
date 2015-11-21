@@ -10,7 +10,7 @@ class HKGPostGrabberMiddleMan extends Actor with ActorLogging {
   val worker = context.actorOf(HKGPostGrabberWorker.props, "hkg-post-grabber")
 
   // move to config later
-  val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], 1 msgsPer 1.second))
+  val throttler = context.actorOf(Props(classOf[TimerBasedThrottler], 2 msgsPer 1.second))
   throttler ! SetTarget(Some(worker))
 
   def receive = {
