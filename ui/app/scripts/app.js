@@ -6,6 +6,7 @@
 var app = angular.module('hkgApp', [
   'ui.router',
   'ngSanitize',
+  // 'ngResource',
   'angular-loading-bar'
 ]);
 
@@ -14,26 +15,88 @@ var app = angular.module('hkgApp', [
  */
 app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($urlRouterProvider, $stateProvider, $httpProvider) {
 
-  $urlRouterProvider.otherwise('/topics/1');
+  $urlRouterProvider.otherwise('/topics/BW/1');
 
   $httpProvider.useLegacyPromiseExtensions(false);
 
   $stateProvider
-    .state('topics', { url: '/topics/:page', templateUrl: '/views/topics.html',controller: 'TopicsCtrl'})
-    .state('notFound', { url: '/404', templateUrl: '/404.html'})
-    .state('post', { url: '/post/:messageId/:page', templateUrl: '/views/post.html',  controller: 'PostCtrl', controllerAs: 'vm'});
-}]); 
+
+    .state('topics', { 
+      url: '/topics/:channel/:page', 
+      templateUrl: '/views/topics.html', 
+      controller: 'TopicsCtrl'
+    })
+
+    .state('notFound', { 
+      url: '/404', 
+      templateUrl: '/404.html'
+    })
+
+    .state('post', { 
+      url: '/post/:messageId/:page', 
+      templateUrl: '/views/post.html',  
+      controller: 'PostCtrl', 
+      controllerAs: 'vm'
+    });
+}]);
+
+app.factory("ChannelService", function() {
+  var channels = [
+    {c: "ET",d: "娛樂台"},
+    {c: "CA",d: "時事台"},
+    {c: "FN",d: "財經台"},
+    {c: "GM",d: "遊戲台"},
+    {c: "HW",d: "硬件台"},
+    {c: "IN",d: "電訊台"},
+    {c: "SW",d: "軟件台"},
+    {c: "MP",d: "手機台"},
+    {c: "AP",d: "Apps台"},
+    {c: "SP",d: "體育台"},
+    {c: "LV",d: "感情台"},
+    {c: "SY",d: "講故台"},
+    {c: "ED",d: "飲食台"},
+    {c: "PT",d: "寵物台"},
+    {c: "BB",d: "親子台"},
+    {c: "TR",d: "旅遊台"},
+    {c: "CO",d: "潮流台"},
+    {c: "AN",d: "動漫台"},
+    {c: "TO",d: "玩具台"},
+    {c: "MU",d: "音樂台"},
+    {c: "VI",d: "影視台"},
+    {c: "DC",d: "攝影台"},
+    {c: "ST",d: "學術台"},
+    {c: "WK",d: "上班台"},
+    {c: "TS",d: "汽車台"},
+    {c: "RA",d: "電　台"},
+    {c: "AU",d: "成人台"},
+    {c: "MB",d: "站務台"},
+    {c: "AC",d: "活動台"},
+    {c: "JT",d: "直播台"},
+    {c: "EP",d: "創意台"},
+    {c: "BW",d: "吹水台"}
+  ];
+
+  return {
+    getChannel: function() {
+      return channels;
+    }
+  };
+});
 
 /**
  * The home controller.
  */
-app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', function($http, $scope, $state, $window) {
+app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', function($http, $scope, $state, $window, ChannelService) {
+  $scope.channels = ChannelService.getChannel();
+
+  $scope.channelNow = ChannelService.getChannel().filter(function(a){ return a.c == $state.params.channel})[0].d;
 
   $http({
     url: "/api/v1/topics",
     method: 'GET',
     params: {
-      page: $state.params.page
+      page: $state.params.page,
+      channel: $state.params.channel
     }
   }).
   then(function(response){

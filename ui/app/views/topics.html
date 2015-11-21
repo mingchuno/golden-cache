@@ -1,8 +1,23 @@
-<div class="page-header">
-  <h2>
-    吹水台
-  </h2>
-</div>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <span class="navbar-brand">{{channelNow}}</span>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">轉台<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c, page:1})'>{{channel.d}}</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 
 <table class="table table-striped">
 <tr>
@@ -30,12 +45,12 @@
 <nav>
   <ul class="pagination">
     <li ng-hide="hidePrev">
-      <a ui-sref='topics({page: prevPage})' aria-label="Previous">
+      <a ui-sref='topics({channel: channelNow, page: prevPage})' aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
     <li>
-      <a ui-sref='topics({page: nextPage})' aria-label="Next">
+      <a ui-sref='topics({channel: channelNow, page: nextPage})' aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>

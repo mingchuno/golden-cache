@@ -19,3 +19,4 @@ bin
 *.iws
 /node_modules
 *.log
+.idea
