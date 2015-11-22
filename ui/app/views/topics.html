@@ -23,21 +23,21 @@
 <tr>
   <th>評分</th>
   <th>題目</th>
-  <th>作者</th>
+  <th ng-hide="hideAuthor">作者</th>
   <th>回覆</th>
-  <th>最後回覆</th>
+  <th ng-hide="hideReplyTime">最後回覆</th>
 </tr>
 <tr ng-repeat="topic in topics">
-  <td ng-style="{'color': topic.color}">{{topic.rating}}</td>
+  <td class="rating" ng-style="{'color': topic.color}">{{topic.rating}}</td>
   <td>
     <a ui-sref='post({messageId: topic.messageId, lastChannel: channelCodeName})'>{{topic.messageTitle}}</a>
-    <span ng-repeat="page in topic.pages">
+    <span ng-hide="hideAuthor" ng-repeat="page in topic.pages">
       <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
     </span>
   </td>
-  <td>{{topic.authorName}}</td>
+  <td ng-hide="hideAuthor">{{topic.authorName}}</td>
   <td>{{topic.totalReplies}}</td>
-  <td>{{topic.lastReplyDateString}}</td>
+  <td ng-hide="hideReplyTime">{{topic.lastReplyDateString}}</td>
 </tr>
 </table>
 <nav>

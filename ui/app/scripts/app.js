@@ -50,7 +50,7 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 app.factory("TitleService", function() {
   return {
     getDefaultTitle: function() {
-      return ' - HKG Cache v1.2.2 [Beta]';
+      return ' - HKG Cache v1.2.3 [Beta]';
     }
   }
 });
@@ -110,6 +110,12 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
   $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel);
 
   $scope.channelCodeName = $state.params.channel;
+
+  $scope.hideReplyTime = $($window).width() < 1000;
+
+  $scope.hideAuthor = $($window).width() < 640;
+
+  console.log("hahaha");
 
   // hard code now
   $window.document.title = $scope.channelNow + TitleService.getDefaultTitle();
