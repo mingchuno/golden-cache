@@ -35,7 +35,7 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       templateUrl: '/404.html'
     })
 
-    .state('post', { 
+    .state('post', {
       url: '/post/:messageId/:page', 
       templateUrl: '/views/post.html',  
       controller: 'PostCtrl', 
@@ -45,6 +45,14 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       }
     });
 }]);
+
+app.factory("TitleService", function() {
+  return {
+    getDefaultTitle: function() {
+      return ' - HKG Cache v1.2.2 [Beta]';
+    }
+  }
+});
 
 app.factory("ChannelService", function() {
   var channels = [
@@ -95,10 +103,13 @@ app.factory("ChannelService", function() {
 /**
  * The home controller.
  */
-app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', function($http, $scope, $state, $window, ChannelService) {
+app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', 'TitleService', function($http, $scope, $state, $window, ChannelService, TitleService) {
   $scope.channels = ChannelService.getChannel();
 
   $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel)
+
+  // hard code now
+  $window.document.title = $scope.channelNow + TitleService.getDefaultTitle();
 
   $http({
     url: "/api/v1/topics",
@@ -108,7 +119,7 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
       channel: $state.params.channel
     }
   }).
-  then(function(response){
+  then(function(response) {
     var reformattedObject = response.data.topicList.map(function(obj){
         // each topic
         // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
@@ -130,9 +141,6 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
         return obj;
     });
 
-    // hard code now
-    $window.document.title = '吹水台 - HKG Cache v1.2.2 [Beta]';
-
     $scope.topics = reformattedObject;
     $scope.nextPage = 1 + $state.params.page;
     $scope.prevPage = 1 - $state.params.page;
@@ -145,7 +153,7 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
 /**
  * The post controller
  */
-app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($scope, $http, $state, $window) {
+app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleService', function($scope, $http, $state, $window, TitleService) {
   $scope.vm = this;
   var vm = $scope.vm;
 
@@ -167,7 +175,7 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
       return obj;
     });
 
-    $window.document.title = response.data.messageTitle + ' - HKG Cache v1.2.2 [Beta]';
+    $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
 
     vm.post = response.data;
   }, function(response){
