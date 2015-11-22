@@ -6,11 +6,11 @@
     "grunt-cli": "^0.1.13"
   },
   "devDependencies": {
+    "grunt": "^0.4.5",
     "yo": "~1.5.0"
   },
   "engines": {
     "node": "4.2.x"
   },
-  "scripts": {
-  }
+  "scripts": {}
 }

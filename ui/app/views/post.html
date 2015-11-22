@@ -56,8 +56,12 @@
 
     <li>
       <a ng-show="vm.post.currentPages < vm.post.totalPages" ui-sref='post({messageId: vm.post.messageId, page: vm.post.currentPages + 1})' aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
+        <span aria-hidden="true">&raquo;</span>	
       </a>
-    </li>
+    </li> 
+	
+	<li>
+		跳至 <select  ng-model="pageValue" ng-options="o as o for o in options" ng-change="pageChange(vm.post.messageId, pageValue)"></select> 頁
+	</li>
   </ul>
 </nav>
