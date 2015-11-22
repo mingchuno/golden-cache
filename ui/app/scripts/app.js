@@ -24,7 +24,10 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
     .state('topics', { 
       url: '/topics/:channel/:page', 
       templateUrl: '/views/topics.html', 
-      controller: 'TopicsCtrl'
+      controller: 'TopicsCtrl',
+      params: {
+        page: "1"
+      }
     })
 
     .state('notFound', { 
@@ -32,13 +35,25 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       templateUrl: '/404.html'
     })
 
-    .state('post', { 
+    .state('post', {
       url: '/post/:messageId/:page', 
       templateUrl: '/views/post.html',  
       controller: 'PostCtrl', 
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      params: {
+        page: "1",
+        lastChannel: "BW"
+      }
     });
 }]);
+
+app.factory("TitleService", function() {
+  return {
+    getDefaultTitle: function() {
+      return ' - HKG Cache v1.2.2 [Beta]';
+    }
+  }
+});
 
 app.factory("ChannelService", function() {
   var channels = [
@@ -79,6 +94,9 @@ app.factory("ChannelService", function() {
   return {
     getChannel: function() {
       return channels;
+    },
+    findCurrentChannelDisplayName: function(codeName) {
+      return channels.filter(function(a){ return a.c == codeName})[0].d;
     }
   };
 });
@@ -86,10 +104,15 @@ app.factory("ChannelService", function() {
 /**
  * The home controller.
  */
-app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', function($http, $scope, $state, $window, ChannelService) {
+app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', 'TitleService', function($http, $scope, $state, $window, ChannelService, TitleService) {
   $scope.channels = ChannelService.getChannel();
 
-  $scope.channelNow = ChannelService.getChannel().filter(function(a){ return a.c == $state.params.channel})[0].d;
+  $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel);
+
+  $scope.channelCodeName = $state.params.channel;
+
+  // hard code now
+  $window.document.title = $scope.channelNow + TitleService.getDefaultTitle();
 
   $http({
     url: "/api/v1/topics",
@@ -99,7 +122,7 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
       channel: $state.params.channel
     }
   }).
-  then(function(response){
+  then(function(response) {
     var reformattedObject = response.data.topicList.map(function(obj){
         // each topic
         // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
@@ -118,15 +141,24 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
         var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
         obj.lastReplyDateString = dStr;
 
+        if (obj.rating > 0) {
+          obj.color = 'green';
+        }
+
+        if (obj.rating < 0) {
+          obj.color = 'red';
+        }
+
+        if (obj.rating == 0) {
+          obj.color = '#333';
+        }
+
         return obj;
     });
 
-    // hard code now
-    $window.document.title = '吹水台 - HKG Cache v1.2.2 [Beta]';
-
     $scope.topics = reformattedObject;
-    $scope.nextPage = parseInt($state.params.page) + 1;
-    $scope.prevPage = parseInt($state.params.page) - 1;
+    $scope.nextPage = 1 + $state.params.page;
+    $scope.prevPage = 1 - $state.params.page;
     $scope.hidePrev = $state.params.page == 1;
   }, function(response) {
       $state.go('notFound')
@@ -136,9 +168,14 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
 /**
  * The post controller
  */
-app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($scope, $http, $state, $window) {
+app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleService', 'ChannelService', function($scope, $http, $state, $window, TitleService, ChannelService) {
+  console.log($state.params.lastChannel);
   $scope.vm = this;
   var vm = $scope.vm;
+
+  vm.lastChannel = $state.params.lastChannel;
+
+  vm.channelDisplayName = ChannelService.findCurrentChannelDisplayName($state.params.lastChannel);
 
   $http({
     url: "/api/v1/post",
@@ -158,7 +195,7 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
       return obj;
     });
 
-    $window.document.title = response.data.messageTitle + ' - HKG Cache v1.2.2 [Beta]';
+    $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
     vm.post = response.data;
 	
 	// total page option list

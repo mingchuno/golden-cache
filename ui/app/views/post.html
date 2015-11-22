@@ -2,10 +2,9 @@
 
   <div class="row">
     <div class="col-md-8">
-      <!-- <a class="btn btn-warning" ui-sref='topics({page:1})'>吹水台</a> -->
       <ol class="breadcrumb">
-        <li><a ui-sref='topics({channel: "BW", page:1})'>高登主頁</a></li>
-        <li><a ui-sref='topics({channel: "BW", page:1})'>吹水台</a></li>
+        <li><a ui-sref='topics({channel: "BW"})'>高登主頁</a></li>
+        <li><a ui-sref='topics({channel: vm.lastChannel})'>{{vm.channelDisplayName}}</a></li>
         <li>{{vm.post.messageTitle}}</li>
       </ol>
     </div>
