@@ -24,7 +24,10 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
     .state('topics', { 
       url: '/topics/:channel/:page', 
       templateUrl: '/views/topics.html', 
-      controller: 'TopicsCtrl'
+      controller: 'TopicsCtrl',
+      params: {
+        page: "1"
+      }
     })
 
     .state('notFound', { 
@@ -36,7 +39,10 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       url: '/post/:messageId/:page', 
       templateUrl: '/views/post.html',  
       controller: 'PostCtrl', 
-      controllerAs: 'vm'
+      controllerAs: 'vm',
+      params: {
+        page: "1"
+      }
     });
 }]);
 
@@ -79,6 +85,9 @@ app.factory("ChannelService", function() {
   return {
     getChannel: function() {
       return channels;
+    },
+    findCurrentChannelDisplayName: function(codeName) {
+      return channels.filter(function(a){ return a.c == codeName})[0].d;
     }
   };
 });
@@ -89,7 +98,7 @@ app.factory("ChannelService", function() {
 app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', function($http, $scope, $state, $window, ChannelService) {
   $scope.channels = ChannelService.getChannel();
 
-  $scope.channelNow = ChannelService.getChannel().filter(function(a){ return a.c == $state.params.channel})[0].d;
+  $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel)
 
   $http({
     url: "/api/v1/topics",
@@ -125,8 +134,8 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
     $window.document.title = '吹水台 - HKG Cache v1.2.2 [Beta]';
 
     $scope.topics = reformattedObject;
-    $scope.nextPage = parseInt($state.params.page) + 1;
-    $scope.prevPage = parseInt($state.params.page) - 1;
+    $scope.nextPage = 1 + $state.params.page;
+    $scope.prevPage = 1 - $state.params.page;
     $scope.hidePrev = $state.params.page == 1;
   }, function(response) {
       $state.go('notFound')

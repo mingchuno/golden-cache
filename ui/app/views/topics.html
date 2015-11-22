@@ -11,7 +11,7 @@
         <li class="dropdown">
           <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">轉台<span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c, page:1})'>{{channel.d}}</a></li>
+            <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'>{{channel.d}}</a></li>
           </ul>
         </li>
       </ul>
@@ -32,7 +32,7 @@
                 topic.rating < 0 && {'color': 'red'}  ||
                 topic.rating == 0 && {'color': '#333'}">{{topic.rating}}</td>
   <td>
-    <a ui-sref='post({messageId: topic.messageId, page: 1})'>{{topic.messageTitle}}</a>
+    <a ui-sref='post({messageId: topic.messageId})'>{{topic.messageTitle}}</a>
     <span ng-repeat="page in topic.pages">
       <a ui-sref='post({messageId: topic.messageId, page: page})'>[{{page}}]</a>
     </span>
