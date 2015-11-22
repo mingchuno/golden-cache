@@ -159,8 +159,19 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', function($sc
     });
 
     $window.document.title = response.data.messageTitle + ' - HKG Cache v1.2.2 [Beta]';
-
     vm.post = response.data;
+	
+	// total page option list
+	var options = new Array(vm.post.totalPages);
+	for (var i = 0; i < vm.post.totalPages; i++){
+		options[i] = i + 1;
+	}
+	$scope.options = options;
+	$scope.pageValue = vm.post.currentPages; 
+	$scope.pageChange = function(messageId, pageValue){
+	    $state.go('post', {messageId: messageId, page: pageValue})
+    }
+	
   }, function(response){
     $state.go('notFound')
   });
