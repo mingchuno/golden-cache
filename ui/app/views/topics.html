@@ -22,19 +22,17 @@
 <table class="table table-striped">
 <tr>
   <th>評分</th>
-  <th>題目</th> 
+  <th>題目</th>
   <th>作者</th>
   <th>回覆</th>
   <th>最後回覆</th>
 </tr>
 <tr ng-repeat="topic in topics">
-  <td ng-style="topic.rating > 0 && {'color': 'green'} ||
-                topic.rating < 0 && {'color': 'red'}  ||
-                topic.rating == 0 && {'color': '#333'}">{{topic.rating}}</td>
+  <td ng-style="{'color': topic.color}">{{topic.rating}}</td>
   <td>
-    <a ui-sref='post({messageId: topic.messageId})'>{{topic.messageTitle}}</a>
+    <a ui-sref='post({messageId: topic.messageId, lastChannel: channelCodeName})'>{{topic.messageTitle}}</a>
     <span ng-repeat="page in topic.pages">
-      <a ui-sref='post({messageId: topic.messageId, page: page})'>[{{page}}]</a>
+      <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
     </span>
   </td>
   <td>{{topic.authorName}}</td>

@@ -41,7 +41,8 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       controller: 'PostCtrl', 
       controllerAs: 'vm',
       params: {
-        page: "1"
+        page: "1",
+        lastChannel: "BW"
       }
     });
 }]);
@@ -106,7 +107,9 @@ app.factory("ChannelService", function() {
 app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', 'TitleService', function($http, $scope, $state, $window, ChannelService, TitleService) {
   $scope.channels = ChannelService.getChannel();
 
-  $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel)
+  $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel);
+
+  $scope.channelCodeName = $state.params.channel;
 
   // hard code now
   $window.document.title = $scope.channelNow + TitleService.getDefaultTitle();
@@ -138,6 +141,18 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
         var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
         obj.lastReplyDateString = dStr;
 
+        if (obj.rating > 0) {
+          obj.color = 'green';
+        }
+
+        if (obj.rating < 0) {
+          obj.color = 'red';
+        }
+
+        if (obj.rating == 0) {
+          obj.color = '#333';
+        }
+
         return obj;
     });
 
@@ -153,9 +168,14 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
 /**
  * The post controller
  */
-app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleService', function($scope, $http, $state, $window, TitleService) {
+app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleService', 'ChannelService', function($scope, $http, $state, $window, TitleService, ChannelService) {
+  console.log($state.params.lastChannel);
   $scope.vm = this;
   var vm = $scope.vm;
+
+  vm.lastChannel = $state.params.lastChannel;
+
+  vm.channelDisplayName = ChannelService.findCurrentChannelDisplayName($state.params.lastChannel);
 
   $http({
     url: "/api/v1/post",
