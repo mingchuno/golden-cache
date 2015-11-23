@@ -186,8 +186,8 @@ app.controller('TopicsCtrl', [
     });
 
     $scope.topics = reformattedObject;
-    $scope.nextPage = 1 + parseInt($state.params.page);
-    $scope.prevPage = 1 - parseInt($state.params.page);
+    $scope.nextPage = parseInt($state.params.page) + 1;
+    $scope.prevPage = parseInt($state.params.page) - 1;
     $scope.hidePrev = $state.params.page == 1;
   }, function(response) {
       $state.go('notFound')
