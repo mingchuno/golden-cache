@@ -50,7 +50,21 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 app.factory("TitleService", function() {
   return {
     getDefaultTitle: function() {
-      return ' - HKG Cache v1.2.3 [Beta]';
+      return ' - HKG Cache v1.2.4 [Beta]';
+    }
+  }
+});
+
+app.factory("TopicsService", function() {
+  var arraySize = 5;
+  return {
+    getPaginationArray: function(currentPage) {
+      var _currentPage = parseInt(currentPage);
+      if (_currentPage <= 3) {
+        return Array.apply(null, Array(arraySize)).map(function (_, i) {return i+1;});
+      } else {
+        return Array.apply(null, Array(arraySize)).map(function (_, i) {return i+_currentPage-2;});
+      }
     }
   }
 });
@@ -104,10 +118,19 @@ app.factory("ChannelService", function() {
 /**
  * The home controller.
  */
-app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelService', 'TitleService', function($http, $scope, $state, $window, ChannelService, TitleService) {
+app.controller('TopicsCtrl', [
+  '$http', 
+  '$scope', 
+  '$state', 
+  '$window', 
+  'ChannelService', 
+  'TitleService', 
+  'TopicsService',
+  function($http, $scope, $state, $window, ChannelService, TitleService, TopicsService) {
+
   $scope.channels = ChannelService.getChannel();
 
-  $scope.channelNow = ChannelService.findCurrentChannelDisplayName($state.params.channel);
+  $scope.channelDisplayName = ChannelService.findCurrentChannelDisplayName($state.params.channel);
 
   $scope.channelCodeName = $state.params.channel;
 
@@ -115,10 +138,10 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
 
   $scope.hideAuthor = $($window).width() < 640;
 
-  console.log("hahaha");
+  $scope.paginationA = TopicsService.getPaginationArray($state.params.page);
 
   // hard code now
-  $window.document.title = $scope.channelNow + TitleService.getDefaultTitle();
+  $window.document.title = $scope.channelDisplayName + TitleService.getDefaultTitle();
 
   $http({
     url: "/api/v1/topics",
@@ -163,8 +186,8 @@ app.controller('TopicsCtrl', ['$http', '$scope', '$state', '$window', 'ChannelSe
     });
 
     $scope.topics = reformattedObject;
-    $scope.nextPage = 1 + $state.params.page;
-    $scope.prevPage = 1 - $state.params.page;
+    $scope.nextPage = 1 + parseInt($state.params.page);
+    $scope.prevPage = 1 - parseInt($state.params.page);
     $scope.hidePrev = $state.params.page == 1;
   }, function(response) {
       $state.go('notFound')
