@@ -1,20 +1,19 @@
-<nav class="navbar navbar-default">
+<nav role="navigation" class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <span class="navbar-brand">{{channelDisplayName}}</span>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">轉台<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'>{{channel.d}}</a></li>
-          </ul>
-        </li>
-      </ul>
+      <div uib-dropdown class="nav navbar-nav navbar-right">
+        <a href id="simple-dropdown" uib-dropdown-toggle>
+          轉台<span class="caret"></span>
+        </a>
+        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
+          <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'>{{channel.d}}</a></li>
+        </ul>
+      </div>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
@@ -40,18 +39,5 @@
   <td ng-hide="hideReplyTime">{{topic.lastReplyDateString}}</td>
 </tr>
 </table>
-<nav>
-  <ul class="pagination">
-    <li ng-hide="hidePrev">
-      <a ui-sref='topics({channel: channelCodeName, page: prevPage})' aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li ng-repeat="p in paginationA"><a ui-sref='topics({channel: channelCodeName, page: p})'>{{p}}</a></li>
-    <li>
-      <a ui-sref='topics({channel: channelCodeName, page: nextPage})' aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+
+<uib-pagination max-size="5" total-items="100" ng-model="currPage" items-per-page="1" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>

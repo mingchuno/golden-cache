@@ -7,7 +7,8 @@ var app = angular.module('hkgApp', [
   'ui.router',
   'ngSanitize',
   // 'ngResource',
-  'angular-loading-bar'
+  'angular-loading-bar',
+  'ui.bootstrap'
 ]);
 
 /**
@@ -140,6 +141,11 @@ app.controller('TopicsCtrl', [
 
   $scope.paginationA = TopicsService.getPaginationArray($state.params.page);
 
+  $scope.pageChanged = function() {
+    console.log('Page changed to: ' + $scope.currPage);
+    $state.go('topics', {channel: $scope.channelCodeName, page: $scope.currPage});
+  };
+
   // hard code now
   $window.document.title = $scope.channelDisplayName + TitleService.getDefaultTitle();
 
@@ -186,6 +192,7 @@ app.controller('TopicsCtrl', [
     });
 
     $scope.topics = reformattedObject;
+    $scope.currPage = $state.params.page;
     $scope.nextPage = parseInt($state.params.page) + 1;
     $scope.prevPage = parseInt($state.params.page) - 1;
     $scope.hidePrev = $state.params.page == 1;
@@ -205,6 +212,11 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleServic
   vm.lastChannel = $state.params.lastChannel;
 
   vm.channelDisplayName = ChannelService.findCurrentChannelDisplayName($state.params.lastChannel);
+
+  $scope.pageChanged = function() {
+    console.log('Page changed to: ' + vm.post.currentPages);
+    $state.go('post', {messageId: vm.post.messageId, page: vm.post.currentPages});
+  };
 
   $http({
     url: "/api/v1/post",

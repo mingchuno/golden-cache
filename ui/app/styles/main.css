@@ -2,10 +2,16 @@ img {
   max-width: 90%; 
 }
 
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 blockquote {
   font-size: 14px;
   margin-bottom: 10px;
   padding: 10px 15px;
+}
+
+#bs-example-navbar-collapse-1 > div {
+  margin-top: 15px;
 }
 
 .small-font {
