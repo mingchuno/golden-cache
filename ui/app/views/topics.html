@@ -7,9 +7,9 @@
         <tr>
           <th class="text-nowrap">評分</th>
           <th class="text-nowrap">題目</th>
-          <th class="text-nowrap" ng-hide="hideAuthor">作者</th>
+          <th class="text-nowrap visible-md visible-lg">作者</th>
           <th class="text-nowrap">回覆</th>
-          <th class="text-nowrap" ng-hide="hideReplyTime">最後回覆</th>
+          <th class="text-nowrap hidden-xs">最後回覆</th>
         </tr>
         <tr ng-repeat="topic in topics">
           <td class="rating" ng-style="{'color': topic.color}">{{topic.rating}}</td>
@@ -19,9 +19,9 @@
               <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
             </span>
           </td>
-          <td ng-hide="hideAuthor">{{topic.authorName}}</td>
+          <td class="visible-md visible-lg">{{topic.authorName}}</td>
           <td>{{topic.totalReplies}}</td>
-          <td ng-hide="hideReplyTime">{{topic.lastReplyDateString}}</td>
+          <td class="hidden-xs">{{topic.lastReplyDateString}}</td>
         </tr>
         </table>
 
