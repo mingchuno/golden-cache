@@ -1,43 +1,40 @@
-<nav role="navigation" class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <span class="navbar-brand">{{channelDisplayName}}</span>
-    </div>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <uib-tabset justified="true">
+      <uib-tab heading="{{channelDisplayName}}">
+        <!-- main -->
+        <table class="table table-striped">
+        <tr>
+          <th class="text-nowrap">評分</th>
+          <th class="text-nowrap">題目</th>
+          <th class="text-nowrap" ng-hide="hideAuthor">作者</th>
+          <th class="text-nowrap">回覆</th>
+          <th class="text-nowrap" ng-hide="hideReplyTime">最後回覆</th>
+        </tr>
+        <tr ng-repeat="topic in topics">
+          <td class="rating" ng-style="{'color': topic.color}">{{topic.rating}}</td>
+          <td>
+            <a ui-sref='post({messageId: topic.messageId, lastChannel: channelCodeName})'>{{topic.messageTitle}}</a>
+            <span ng-hide="hideAuthor" ng-repeat="page in topic.pages">
+              <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
+            </span>
+          </td>
+          <td ng-hide="hideAuthor">{{topic.authorName}}</td>
+          <td>{{topic.totalReplies}}</td>
+          <td ng-hide="hideReplyTime">{{topic.lastReplyDateString}}</td>
+        </tr>
+        </table>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <div uib-dropdown class="nav navbar-nav navbar-right">
-        <a href id="simple-dropdown" uib-dropdown-toggle>
-          轉台<span class="caret"></span>
-        </a>
-        <ul class="uib-dropdown-menu" aria-labelledby="simple-dropdown">
-          <li ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'>{{channel.d}}</a></li>
+        <uib-pagination max-size="5" total-items="100" ng-model="currPage" items-per-page="1" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+        <!-- end main -->
+      </uib-tab>
+
+      <uib-tab heading="轉台">
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'><p class="text-center">{{channel.d}}</p></a></li>
         </ul>
-      </div>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+      </uib-tab>
+    </uib-tabset>
 
-<table class="table table-striped">
-<tr>
-  <th>評分</th>
-  <th>題目</th>
-  <th ng-hide="hideAuthor">作者</th>
-  <th>回覆</th>
-  <th ng-hide="hideReplyTime">最後回覆</th>
-</tr>
-<tr ng-repeat="topic in topics">
-  <td class="rating" ng-style="{'color': topic.color}">{{topic.rating}}</td>
-  <td>
-    <a ui-sref='post({messageId: topic.messageId, lastChannel: channelCodeName})'>{{topic.messageTitle}}</a>
-    <span ng-hide="hideAuthor" ng-repeat="page in topic.pages">
-      <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
-    </span>
-  </td>
-  <td ng-hide="hideAuthor">{{topic.authorName}}</td>
-  <td>{{topic.totalReplies}}</td>
-  <td ng-hide="hideReplyTime">{{topic.lastReplyDateString}}</td>
-</tr>
-</table>
-
-<uib-pagination max-size="5" total-items="100" ng-model="currPage" items-per-page="1" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+  </div>
+</div>

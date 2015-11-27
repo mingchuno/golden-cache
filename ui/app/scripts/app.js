@@ -56,20 +56,6 @@ app.factory("TitleService", function() {
   }
 });
 
-app.factory("TopicsService", function() {
-  var arraySize = 5;
-  return {
-    getPaginationArray: function(currentPage) {
-      var _currentPage = parseInt(currentPage);
-      if (_currentPage <= 3) {
-        return Array.apply(null, Array(arraySize)).map(function (_, i) {return i+1;});
-      } else {
-        return Array.apply(null, Array(arraySize)).map(function (_, i) {return i+_currentPage-2;});
-      }
-    }
-  }
-});
-
 app.factory("ChannelService", function() {
   var channels = [
     {c: "ET",d: "娛樂台"},
@@ -125,9 +111,8 @@ app.controller('TopicsCtrl', [
   '$state', 
   '$window', 
   'ChannelService', 
-  'TitleService', 
-  'TopicsService',
-  function($http, $scope, $state, $window, ChannelService, TitleService, TopicsService) {
+  'TitleService',
+  function($http, $scope, $state, $window, ChannelService, TitleService) {
 
   $scope.channels = ChannelService.getChannel();
 
@@ -138,8 +123,6 @@ app.controller('TopicsCtrl', [
   $scope.hideReplyTime = $($window).width() < 1000;
 
   $scope.hideAuthor = $($window).width() < 640;
-
-  $scope.paginationA = TopicsService.getPaginationArray($state.params.page);
 
   $scope.pageChanged = function() {
     console.log('Page changed to: ' + $scope.currPage);
@@ -193,9 +176,6 @@ app.controller('TopicsCtrl', [
 
     $scope.topics = reformattedObject;
     $scope.currPage = $state.params.page;
-    $scope.nextPage = parseInt($state.params.page) + 1;
-    $scope.prevPage = parseInt($state.params.page) - 1;
-    $scope.hidePrev = $state.params.page == 1;
   }, function(response) {
       $state.go('notFound')
   });
@@ -204,8 +184,15 @@ app.controller('TopicsCtrl', [
 /**
  * The post controller
  */
-app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleService', 'ChannelService', function($scope, $http, $state, $window, TitleService, ChannelService) {
-  console.log($state.params.lastChannel);
+app.controller("PostCtrl", [
+  '$scope', 
+  '$http', 
+  '$state', 
+  '$window', 
+  'TitleService', 
+  'ChannelService', 
+  function($scope, $http, $state, $window, TitleService, ChannelService) {
+    
   $scope.vm = this;
   var vm = $scope.vm;
 
@@ -238,18 +225,13 @@ app.controller("PostCtrl", ['$scope', '$http', '$state', '$window', 'TitleServic
 
     $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
     vm.post = response.data;
-	
-	// total page option list
-	var options = new Array(vm.post.totalPages);
-	for (var i = 0; i < vm.post.totalPages; i++){
-		options[i] = i + 1;
-	}
-	$scope.options = options;
-	$scope.pageValue = vm.post.currentPages; 
-	$scope.pageChange = function(messageId, pageValue){
-	    $state.go('post', {messageId: messageId, page: pageValue})
+  
+
+    $scope.pageValue = vm.post.currentPages; 
+    $scope.pageChange = function(messageId, pageValue){
+     $state.go('post', {messageId: messageId, page: pageValue})
     }
-	
+  
   }, function(response){
     $state.go('notFound')
   });
