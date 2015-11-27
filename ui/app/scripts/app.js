@@ -1,5 +1,7 @@
 'use strict';
 
+moment.locale('zh-tw');
+
 /**
  * The application.
  */
@@ -114,6 +116,9 @@ app.controller('TopicsCtrl', [
   'TitleService',
   function($http, $scope, $state, $window, ChannelService, TitleService) {
 
+  $scope.vm = this;
+  var vm = $scope.vm;
+
   $scope.channels = ChannelService.getChannel();
 
   $scope.channelDisplayName = ChannelService.findCurrentChannelDisplayName($state.params.channel);
@@ -124,9 +129,11 @@ app.controller('TopicsCtrl', [
 
   $scope.hideAuthor = $($window).width() < 640;
 
+  vm.currPage = $state.params.page;
+
   $scope.pageChanged = function() {
-    console.log('Page changed to: ' + $scope.currPage);
-    $state.go('topics', {channel: $scope.channelCodeName, page: $scope.currPage});
+    console.log('Page changed to: ' + vm.currPage);
+    $state.go('topics', {channel: $scope.channelCodeName, page: vm.currPage});
   };
 
   // hard code now
@@ -154,10 +161,8 @@ app.controller('TopicsCtrl', [
         }
         obj.pages = pageArray;
 
-        // date part
-        var d = new Date(obj.lastReplyDate);
-        var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-        obj.lastReplyDateString = dStr;
+        // use moment to parse and display time
+        obj.lastReplyDateString = moment(obj.lastReplyDate).fromNow();
 
         if (obj.rating > 0) {
           obj.color = 'green';
@@ -175,7 +180,6 @@ app.controller('TopicsCtrl', [
     });
 
     $scope.topics = reformattedObject;
-    $scope.currPage = $state.params.page;
   }, function(response) {
       $state.go('notFound')
   });
@@ -192,7 +196,7 @@ app.controller("PostCtrl", [
   'TitleService', 
   'ChannelService', 
   function($scope, $http, $state, $window, TitleService, ChannelService) {
-    
+
   $scope.vm = this;
   var vm = $scope.vm;
 
@@ -216,9 +220,12 @@ app.controller("PostCtrl", [
   then(function(response){
     response.data.messages = response.data.messages.map(function(obj){
       // date part
-      var d = new Date(obj.messageDate);
-      var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
-      obj.replyDateStr = dStr;
+      // var d = new Date(obj.messageDate);
+      // var dStr = d.toLocaleDateString() + ' ' + d.toLocaleTimeString();
+      // obj.replyDateStr = dStr;
+
+      // use moment to parse and display time
+      obj.replyDateStr = moment(obj.messageDate).format('YYYY-MM-DD HH:mm:ss');
 
       return obj;
     });
