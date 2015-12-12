@@ -16,7 +16,8 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
   private val apiEndpoint = "http://apps.hkgolden.com"
 
   def getTopis(page: Int = 1, channel: String = "BW"): Future[Option[Topics]] = {
-    WS.url(s"$apiEndpoint/android_api/v_1_0/newTopics.aspx?type=$channel&returntype=json&page=$page&filtermode=Y&sensormode=N")
+    val filter = if (channel == "BW") "Y" else "N" 
+    WS.url(s"$apiEndpoint/android_api/v_1_0/newTopics.aspx?type=$channel&returntype=json&page=$page&filtermode=$filter&sensormode=N")
       .get().map { response =>
       val json = response.json
       if ((json \ "success").as[Boolean]) {

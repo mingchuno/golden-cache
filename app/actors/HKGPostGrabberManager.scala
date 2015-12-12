@@ -15,7 +15,7 @@ class HKGPostGrabberManager extends Actor with ActorLogging with HKGPostGrabber 
 
   val middleMan = context.actorOf(Props[HKGPostGrabberMiddleMan], "hkg-post-grabber-middle-man")
 
-  context.system.scheduler.schedule(2 seconds, 10 seconds, self, BackgroundGrabJob)
+  context.system.scheduler.schedule(2 seconds, 30 seconds, self, BackgroundGrabJob)
 
   def receive = {
     case GrabJob(messageId) =>
