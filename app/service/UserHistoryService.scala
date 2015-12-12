@@ -11,7 +11,7 @@ trait UserHistoryService {
   private implicit val formats = Serialization.formats(NoTypeHints)
 
   // move to config later
-  private val HISTORY_SIZE = 10
+  private val HISTORY_SIZE = 20
 
   // move to config later
   // unit in second (2 days)
