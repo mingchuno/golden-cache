@@ -15,7 +15,7 @@
           <td class="rating" ng-style="{'color': topic.color}">{{topic.rating}}</td>
           <td>
             <a ui-sref='post({messageId: topic.messageId, lastChannel: channelCodeName})'>{{topic.messageTitle}}</a>
-            <span ng-hide="hideAuthor" ng-repeat="page in topic.pages">
+            <span ng-hide="hideAuthor || topic.pages.length == 1" ng-hide="topic.pages.length == 1" ng-repeat="page in topic.pages">
               <a ui-sref='post({messageId: topic.messageId, page: page, lastChannel: channelCodeName})'>[{{page}}]</a>
             </span>
           </td>
