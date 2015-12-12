@@ -1,7 +1,7 @@
 all: build
 
 build:
-	sbt clean dist
+	sbt clean test dist
 
 clean:
 	rm -rf target/

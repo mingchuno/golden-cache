@@ -1,7 +1,9 @@
 package service
 
-import base.HKGCacheSpecBase
 import java.util.UUID
+
+import base.HKGCacheSpecBase
+import models.hkg.HistoryItem
 
 class UserHistoryServiceSpec extends HKGCacheSpecBase with UserHistoryService {
   "UserHistoryService basic function" should "work as expected" in {
