@@ -1,7 +1,14 @@
 package dao
 
 import com.redis.RedisClientPool
+import com.typesafe.config.ConfigFactory
 
 object RedisDAO {
-  val clients = new RedisClientPool("localhost", 6379)
+  private val config = ConfigFactory.load
+  config.checkValid(ConfigFactory.defaultReference)
+
+  // init some Redis
+  private val redisHost = config.getString("golden.redis.host")
+  private val redisPort = config.getInt("golden.redis.port")
+  val redisPool: RedisClientPool = new RedisClientPool(redisHost, redisPort)
 }

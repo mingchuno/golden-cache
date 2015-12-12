@@ -16,7 +16,11 @@ case class Post(messageId:Int,
                 rating: Int, 
                 totalPages: Int, 
                 currentPages: Int,
-                messages: List[Reply])
+                messages: List[Reply]) {
+  def toHistoryItem = {
+    HistoryItem(id = messageId, title = messageTitle)
+  }
+}
 
 object Post extends HKGDataConverter {
   // custom apply function

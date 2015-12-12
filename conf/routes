@@ -9,6 +9,9 @@ GET         /                                com.tuplejump.playYeoman.Yeoman.ind
 GET         /api/v1/post                     controllers.HKGPostController.getPostRest(messageId:Int, page: Int)
 GET         /api/v1/topics                   controllers.HKGPostController.getTopicsRest(page: Int ?= 1, channel: String ?= "BW")
 
+# User History
+GET         /api/v1/history                  controllers.HistoryController.getHistoryRest()
+
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.at(path="/public", file)
 GET         /faces/*file                     controllers.Assets.at(path="/public/images/faces", file)

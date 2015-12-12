@@ -1,23 +1,34 @@
 package controllers
 
+import java.util.UUID
 import javax.inject.Inject
 
 import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import play.api.mvc._
-import service.HKGPostGrabber
+import service.{UserHistoryService, HKGPostGrabber}
 
 class HKGPostController @Inject() (
   val manager: ActorSystemController,
   val messagesApi: MessagesApi)
   extends Controller
+  with UserHistoryService
   with HKGPostGrabber {
 
-  def getPostRest(messageId: Int, page: Int) = Action.async {
+  def getPostRest(messageId: Int, page: Int) = Action.async { request =>
     getPostFromDBOrFallBack(messageId, page).map {
       case Some(post) =>
-        Ok(Json.toJson(post))
+        request.session.get(UUID_KEY) match {
+          case Some(uuid) =>
+            saveHistory(uuid, post.toHistoryItem)
+            Ok(Json.toJson(post))
+          case None =>
+            val newUUID = UUID.randomUUID().toString
+            saveHistory(newUUID, post.toHistoryItem)
+            Ok(Json.toJson(post))
+              .withSession(request.session + (UUID_KEY -> newUUID))
+        }
       case None =>
         NotFound
     } recover {
