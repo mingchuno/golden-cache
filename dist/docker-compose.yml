@@ -6,11 +6,15 @@ web:
    - .:/code
   links:
    - mongo
+   - redis
 
 mongo:
   build: ./deploy
   volumes:
     - /data:/data
+
+redis:
+  image: redis
 
 nginx:
   image: nginx
