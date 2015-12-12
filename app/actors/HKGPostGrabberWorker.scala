@@ -19,7 +19,7 @@ class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
   def receive = {
     case GrabJob(messageId, page) =>
       log.info(s"receive some job with id $messageId and page $page")
-      getPostFromDBOrFallBack(messageId, page).foreach {
+      grabNewPostAndSave(messageId, page).foreach {
         case None =>
           log.warning("cannot found post!")
 
