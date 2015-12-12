@@ -1,6 +1,6 @@
 FROM java
 
-ADD . /code
+COPY . /code
 
 VOLUME /code
 

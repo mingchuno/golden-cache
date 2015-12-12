@@ -23,9 +23,10 @@
   </appender>
 
   <logger name="play" level="INFO" />
+  <logger name="com.ning.http.client" level="INFO" />
   <logger name="application" level="INFO" />
 
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="FILE" />
   </root>
 </configuration>

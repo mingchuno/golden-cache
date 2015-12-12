@@ -2,4 +2,6 @@ FROM mongo
 
 COPY hkg-mongo-index.js /hkg-mongo-index.js
 
-CMD mongod --storageEngine=wiredTiger
+VOLUME /data
+
+CMD mongod --storageEngine=wiredTiger --dbpath /data

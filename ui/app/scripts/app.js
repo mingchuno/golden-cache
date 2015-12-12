@@ -53,7 +53,7 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 app.factory("TitleService", function() {
   return {
     getDefaultTitle: function() {
-      return ' - HKG Cache v1.2.5 [Beta]';
+      return ' - HKG Cache v1.2.6 [Beta]';
     }
   }
 });

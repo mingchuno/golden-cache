@@ -9,6 +9,8 @@ web:
 
 mongo:
   build: ./deploy
+  volumes:
+    - /data:/data
 
 nginx:
   image: nginx
