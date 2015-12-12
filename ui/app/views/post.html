@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-md-8">
-      <ol class="breadcrumb">
+      <ol class="visible-md visible-lg breadcrumb">
         <li><a ui-sref='topics({channel: "BW"})'>高登主頁</a></li>
         <li><a ui-sref='topics({channel: vm.lastChannel})'>{{vm.channelDisplayName}}</a></li>
         <li>{{vm.post.messageTitle}}</li>
@@ -11,19 +11,24 @@
     <div class="col-md-4 text-right">
       <!-- Font -->
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default" ng-click="fontClass='small-font'">細</button>
-        <button type="button" class="btn btn-default" ng-click="fontClass='normal-font'">正常</button>
-        <button type="button" class="btn btn-default" ng-click="fontClass='big-font'">大</button>
-        <button type="button" class="btn btn-default" ng-click="fontClass='ultra-font'">超大</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='small-font'">細</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='normal-font'">正常</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='big-font'">大</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='ultra-font'">超大</button>
       </div>
     </div>
   </div>
 
-  <h2>
+  <h2 class="visible-md visible-lg">
     {{vm.post.messageTitle}}
     <span class="badge badge-success">Good: {{vm.post.ratingGood}}</span>
     <span class="badge badge-error">Bad: {{vm.post.ratingBad}}</span>
   </h2>
+  <h4 class="visible-xs visible-sm">
+    {{vm.post.messageTitle}}
+    <span class="badge badge-success">Good: {{vm.post.ratingGood}}</span>
+    <span class="badge badge-error">Bad: {{vm.post.ratingBad}}</span>
+  </h4>
 </div>
 
 <ul class="list-group" ng-init="fontClass='normal-font'">
@@ -46,4 +51,6 @@
   </li>
 </ul>
 
-<uib-pagination boundary-links="true" max-size="6" items-per-page="1" total-items="vm.post.totalPages" ng-model="vm.post.currentPages" class="pagination-sm" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+<div class="text-center">
+  <uib-pagination boundary-links="true" max-size="6" items-per-page="1" total-items="vm.post.totalPages" ng-model="vm.post.currentPages" class="pagination-sm" ng-change="pageChanged()" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+</div>

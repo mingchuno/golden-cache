@@ -132,7 +132,7 @@ app.controller('TopicsCtrl', [
   vm.currPage = $state.params.page;
 
   $scope.pageChanged = function() {
-    console.log('Page changed to: ' + vm.currPage);
+    // console.log('Page changed to: ' + vm.currPage);
     $state.go('topics', {channel: $scope.channelCodeName, page: vm.currPage});
   };
 
