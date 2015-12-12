@@ -149,6 +149,7 @@ app.controller('TopicsCtrl', [
   });
 
   vm.purgeHistory = function() {
+    vm.history = [];
     HistoryService.delete();
   };
 
