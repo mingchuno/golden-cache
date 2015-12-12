@@ -9,27 +9,27 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import play.api.mvc._
 import service.{UserHistoryService, HKGPostGrabber}
-import utils.LogUtils
+import utils.{CookieHelper, LogUtils}
 
 class HKGPostController @Inject() (
   val manager: ActorSystemController,
   val messagesApi: MessagesApi)
   extends Controller
   with UserHistoryService
+  with CookieHelper
   with HKGPostGrabber {
 
   def getPostRest(messageId: Int, page: Int) = Action.async { request =>
     getPostFromDBOrFallBack(messageId, page).map {
       case Some(post) =>
-        request.session.get(UUID_KEY) match {
+        request.cookies.get(UUID_KEY).map(_.value) match {
           case Some(uuid) =>
             saveHistory(uuid, post.toHistoryItem)
             Ok(Json.toJson(post))
           case None =>
             val newUUID = UUID.randomUUID().toString
             saveHistory(newUUID, post.toHistoryItem)
-            Ok(Json.toJson(post))
-              .withSession(request.session + (UUID_KEY -> newUUID))
+            Ok(Json.toJson(post)).withCookies(genCookie(newUUID))
         }
       case None =>
         NotFound

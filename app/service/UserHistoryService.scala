@@ -10,8 +10,6 @@ import org.json4s.native.Serialization.{read, write}
 trait UserHistoryService {
   private implicit val formats = Serialization.formats(NoTypeHints)
 
-  protected val UUID_KEY = "uuid"
-
   // move to config later
   private val HISTORY_SIZE = 10
 
