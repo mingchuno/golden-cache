@@ -25,7 +25,7 @@ class HKGPostGrabberWorker extends Actor with ActorLogging with HKGPostGrabber {
 
         case Some(post) =>
           if (post.currentPages < post.totalPages) {
-            context.system.scheduler.scheduleOnce(1 second, parent, GrabJob(messageId, page + 1))
+            context.system.scheduler.scheduleOnce(500 millis, parent, GrabJob(messageId, page + 1))
           } else {
             log.info("post.currentPages >= post.totalPages and do nothing!")
           }
