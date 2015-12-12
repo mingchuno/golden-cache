@@ -3,11 +3,13 @@ package controllers
 import java.util.UUID
 import javax.inject.Inject
 
+import play.api.Logger
 import play.api.i18n.MessagesApi
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import play.api.mvc._
 import service.{UserHistoryService, HKGPostGrabber}
+import utils.LogUtils
 
 class HKGPostController @Inject() (
   val manager: ActorSystemController,
@@ -32,7 +34,8 @@ class HKGPostController @Inject() (
       case None =>
         NotFound
     } recover {
-      case _ =>
+      case e =>
+        Logger.warn(LogUtils.getStackTraceAsString(e))
         InternalServerError
     }
   }
@@ -44,7 +47,8 @@ class HKGPostController @Inject() (
       case None =>
         NotFound
     } recover {
-      case _ =>
+      case e =>
+        Logger.warn(LogUtils.getStackTraceAsString(e))
         InternalServerError
     }
   }

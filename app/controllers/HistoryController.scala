@@ -29,5 +29,4 @@ class HistoryController extends Controller with UserHistoryService with HistoryI
     }
   }
 
-
 }
