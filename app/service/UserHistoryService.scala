@@ -21,6 +21,14 @@ trait UserHistoryService {
 
   private def getKey(uuid: String) = s"golden-cache:$uuid"
 
+  def purgeHistory(uuid: String) = {
+    RedisDAO.redisPool.withClient {
+      redis => {
+        redis.del(getKey(uuid))
+      }
+    }
+  }
+
   def getHistory(uuid: String): List[HistoryItem] = {
     val key = getKey(uuid)
     RedisDAO.redisPool.withClient {

@@ -8,7 +8,7 @@ moment.locale('zh-tw');
 var app = angular.module('hkgApp', [
   'ui.router',
   'ngSanitize',
-  // 'ngResource',
+  'ngResource',
   'angular-loading-bar',
   'ui.bootstrap'
 ]);
@@ -53,9 +53,13 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 app.factory("TitleService", function() {
   return {
     getDefaultTitle: function() {
-      return ' - HKG Cache v1.2.6 [Beta]';
+      return ' - HKG Cache v1.2.7 [Beta]';
     }
   }
+});
+
+app.factory("HistoryService", function($resource) {
+  return $resource("/api/v1/history");
 });
 
 app.factory("ChannelService", function() {
@@ -114,7 +118,8 @@ app.controller('TopicsCtrl', [
   '$window', 
   'ChannelService', 
   'TitleService',
-  function($http, $scope, $state, $window, ChannelService, TitleService) {
+  'HistoryService',
+  function($http, $scope, $state, $window, ChannelService, TitleService, HistoryService) {
 
   $scope.vm = this;
   var vm = $scope.vm;
@@ -138,6 +143,14 @@ app.controller('TopicsCtrl', [
 
   // hard code now
   $window.document.title = $scope.channelDisplayName + TitleService.getDefaultTitle();
+
+  HistoryService.query(function(data) {
+    vm.history = data;
+  });
+
+  vm.purgeHistory = function() {
+    HistoryService.delete();
+  };
 
   $http({
     url: "/api/v1/topics",

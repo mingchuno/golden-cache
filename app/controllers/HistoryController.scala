@@ -19,4 +19,15 @@ class HistoryController extends Controller with UserHistoryService with HistoryI
     }
   }
 
+  def purgeHistoryRest() = Action { request =>
+    request.session.get(UUID_KEY) match {
+      case Some(uuid) =>
+        purgeHistory(uuid)
+        Ok
+      case None =>
+        Ok.withSession(request.session + (UUID_KEY -> UUID.randomUUID().toString))
+    }
+  }
+
+
 }

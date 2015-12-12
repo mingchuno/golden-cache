@@ -36,6 +36,17 @@
           <li class="list-group-item" ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'><p class="text-center">{{channel.d}}</p></a></li>
         </ul>
       </uib-tab>
+      <uib-tab heading="歷史">
+        <div ng-show="vm.history.length == 0" class="jumbotron"><h4>無歷史喎，不如去睇下post先啦？</h4></div>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="history in vm.history"><a ui-sref='post({messageId:history.id})'><p class="text-center">{{history.title}}</p></a></li>
+          <li class="list-group-item" ng-hide="vm.history.length == 0">
+            <p class="text-center">
+               <button type="button" class="btn btn-info btn-sm" ng-click="vm.purgeHistory()">清晒佢</button>
+            </p>
+          </li>
+        </ul>
+      </uib-tab>
     </uib-tabset>
 
   </div>
