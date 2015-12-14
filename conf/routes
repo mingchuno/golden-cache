@@ -5,6 +5,13 @@
 # Home page
 GET         /                                com.tuplejump.playYeoman.Yeoman.index
 
+# Handy redirect
+GET         /:messageId                      controllers.ApplicationController.postRedirectShortcut(messageId: Int)
+
+# User
+GET         /u/:uuid                         controllers.ApplicationController.loadUser(uuid: String)
+GET         /api/v1/user/link                controllers.ApplicationController.getUserLink()
+
 # HKG Cache
 GET         /api/v1/post                     controllers.HKGPostController.getPostRest(messageId:Int, page: Int)
 GET         /api/v1/topics                   controllers.HKGPostController.getTopicsRest(page: Int ?= 1, channel: String ?= "BW")
