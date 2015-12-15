@@ -33,6 +33,16 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       }
     })
 
+    .state('faq', {
+      url: '/faq',
+      templateUrl: '/views/faq.html'
+    })
+
+    .state('about', {
+      url: '/about',
+      templateUrl: '/views/about.html'
+    })
+
     .state('notFound', { 
       url: '/404', 
       templateUrl: '/404.html'
@@ -164,14 +174,13 @@ app.controller('TopicsCtrl', [
   then(function(response) {
     var reformattedObject = response.data.topicList.map(function(obj){
         // each topic
-        // var maxPage = Math.min(9, parseInt(obj.totalReplies / 25)) + 1;
-        var maxPage = parseInt(obj.totalReplies / 25) + 1;
+        var maxPage = parseInt((obj.totalReplies - 1) / 25) + 1;
         // console.log("----max page is-----");
         // console.log(maxPage);
         if (maxPage <= 12) {
-          var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;});
+          var pageArray = Array.apply(null, Array(maxPage)).map(function (_, i) {return i+1;}).splice(1, maxPage);
         } else {
-          var pageArray = [1,2,3,4,5,6].concat(Array.apply(null, Array(6)).map(function (_, i) {return maxPage - i;}).reverse());
+          var pageArray = [2,3,4,5,6].concat(Array.apply(null, Array(6)).map(function (_, i) {return maxPage - i;}).reverse());
         }
         obj.pages = pageArray;
 
@@ -254,6 +263,6 @@ app.controller("PostCtrl", [
     }
   
   }, function(response){
-    $state.go('notFound')
+    $state.go('notFound');
   });
 }]);

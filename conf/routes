@@ -6,7 +6,7 @@
 GET         /                                com.tuplejump.playYeoman.Yeoman.index
 
 # Handy redirect
-GET         /:messageId                      controllers.ApplicationController.postRedirectShortcut(messageId: Int)
+GET         /p/:messageId                    controllers.ApplicationController.postRedirectShortcut(messageId: Int)
 
 # User
 GET         /u/:uuid                         controllers.ApplicationController.loadUser(uuid: String)
