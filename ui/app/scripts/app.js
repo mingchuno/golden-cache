@@ -118,6 +118,28 @@ app.factory("ChannelService", function() {
   };
 });
 
+app.factory("TagService", function($resource) {
+  return {
+    // Extract the url inside [url][/url]
+    // Replace the whole tag with hyerlink 
+    parseURL : function(content){
+    	var urlRegex = /\[url\](.+)\[\/url\]/g;
+    	return content.replace(urlRegex, function(match, link) {
+      		return '<a href="' + link + '">' + link + '</a>'
+      });
+    }
+
+    // Extract the youtube link inside [url][/url]
+    // Replace the whole tag with Youtube Preview
+    ,parseYoutube : function(content){
+    	var youtubeRegex = /\[url\]https:\/\/(youtu\.be\/|www\.youtube\.com\/watch\?v=)(.+)\[\/url\]/g;
+    	return content.replace(youtubeRegex, function(match, domain, id) {
+          return '<iframe id="ytplayer" type="text/html" width="560" height="315" src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe><br>' + '<a href="https://' + domain + id + '">https://' + domain + id + '</a>';
+      });
+    }
+  }
+});
+
 /**
  * The home controller.
  */
@@ -216,9 +238,11 @@ app.controller("PostCtrl", [
   '$http', 
   '$state', 
   '$window', 
+  '$sce',
   'TitleService', 
   'ChannelService', 
-  function($scope, $http, $state, $window, TitleService, ChannelService) {
+  'TagService',
+  function($scope, $http, $state, $window, $sce, TitleService, ChannelService, TagService) {
 
   $scope.vm = this;
   var vm = $scope.vm;
@@ -255,8 +279,16 @@ app.controller("PostCtrl", [
 
     $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
     vm.post = response.data;
-  
 
+    // TAG
+    for (var i = 0; i < vm.post.messages.length; i++ ){
+      var msg = vm.post.messages[i];
+      // don't know why dont work for youtube iframe
+      // msg.messageBody = $sce.trustAsHtml(TagService.parseURL(TagService.parseYoutube(msg.messageBody)));
+      
+      // parse URL only
+      msg.messageBody = TagService.parseURL(msg.messageBody);
+    }
     $scope.pageValue = vm.post.currentPages; 
     $scope.pageChange = function(messageId, pageValue){
      $state.go('post', {messageId: messageId, page: pageValue})
