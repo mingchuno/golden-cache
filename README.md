@@ -7,11 +7,13 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 
 # How to start dev?
 
-1. Backend: Install Scala(2.11.x), sbt(0.13.x), MongoDB(v3.x)
+1. Backend: Install Scala(2.11.x), sbt(0.13.x), MongoDB(v3.x), Redis(v3.x)
 2. Frontend: Install node, npm, bower, grunt
 3. `cd ./ui` and `npm install` and `bower install`
-4. in project root, `sbt run` tio start the server
-5. http://localhost:9000/ should work
+4. Run MongoDB which is used to save post
+5. Run Redis which is used to save history
+6. In project root, `sbt run` to start the server
+7. http://localhost:9000/ should work
 
 # How to deploy?
 
