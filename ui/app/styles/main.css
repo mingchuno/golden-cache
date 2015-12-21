@@ -69,3 +69,7 @@ blockquote {
 .badge-inverse:hover {
   background-color: #1a1a1a;
 }
+.youtubePreview {
+  width:560px;
+  height:315px;
+}

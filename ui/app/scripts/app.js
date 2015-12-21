@@ -131,10 +131,13 @@ app.factory("TagService", function($resource) {
 
     // Extract the youtube link inside [url][/url]
     // Replace the whole tag with Youtube Preview
+    // this aims for two type of youtube link only
+    // - http://youtu.be/[ID]
+    // - http://www.youtube.com/watch?v=[ID]
     ,parseYoutube : function(content){
-    	var youtubeRegex = /\[url\]https:\/\/(youtu\.be\/|www\.youtube\.com\/watch\?v=)(.+)\[\/url\]/g;
-    	return content.replace(youtubeRegex, function(match, domain, id) {
-          return '<iframe id="ytplayer" type="text/html" width="560" height="315" src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe><br>' + '<a href="https://' + domain + id + '">https://' + domain + id + '</a>';
+    	var youtubeRegex = /\[url\](http|https):\/\/(youtu\.be\/|www\.youtube\.com\/watch\?v=)(.+)\[\/url\]/g;
+    	return content.replace(youtubeRegex, function(match, httpProtocol, domain, id) {
+          return '<iframe id="ytplayer" type="text/html" class="youtubePreview" src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe><br>' + '<a href="https://' + domain + id + '">https://' + domain + id + '</a>';
       });
     }
   }
@@ -278,16 +281,15 @@ app.controller("PostCtrl", [
     });
 
     $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
-    vm.post = response.data;
-
+    vm.post = response.data;  
+    
     // TAG
     for (var i = 0; i < vm.post.messages.length; i++ ){
       var msg = vm.post.messages[i];
-      // don't know why dont work for youtube iframe
-      // msg.messageBody = $sce.trustAsHtml(TagService.parseURL(TagService.parseYoutube(msg.messageBody)));
-      
-      // parse URL only
-      msg.messageBody = TagService.parseURL(msg.messageBody);
+      // ngSanitize will just delete iframe..
+      // use trustAsHtml?
+      msg.messageBody = $sce.trustAsHtml(TagService.parseURL(TagService.parseYoutube(msg.messageBody)));
+      console.log(msg.messageBody.toString());
     }
     $scope.pageValue = vm.post.currentPages; 
     $scope.pageChange = function(messageId, pageValue){
