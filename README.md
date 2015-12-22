@@ -20,7 +20,8 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 1. `make clean` then `make` to package
 2. uplaod `target/universal/golden-cache-{version}.zip` to your production machine
 3. install `docker` and `docker-compose` in your production machine
-4. unzip the pacakge and run `sudo start.sh` need sudo since it need to bind to port 80
+4. unzip the pacakge, make sure `bin/golden-cache` is executable
+5. run `sh golden-app.sh start`, it may need sudo since it need to bind to port 80
 
 # TODO
 
