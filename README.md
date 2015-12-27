@@ -29,9 +29,8 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 
 ## Test Angular JS
 
-The Angualr JS uses Jasmine for testing
-http://jasmine.github.io/1.3/introduction.html
-The testing codes are put in test/spec/*.js
+The Angualr JS uses [Jasmine](http://jasmine.github.io/1.3/introduction.html) for testing.
+The testing codes are written in **test/spec/*.js**
 
 If you encounter any problems related to karma in running `grunt test`, please install the following package:
 ```
