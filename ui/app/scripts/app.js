@@ -123,7 +123,7 @@ app.factory("TagService", function($resource) {
     // Extract the url inside [url][/url]
     // Replace the whole tag with hyerlink 
     parseURL : function(content){
-    	var urlRegex = /\[url\](.+)\[\/url\]/g;
+    	var urlRegex = /\[url\]([^\[\]]+)\[\/url\]/g;
     	return content.replace(urlRegex, function(match, link) {
       		return '<a href="' + link + '">' + link + '</a>'
       });
@@ -135,7 +135,7 @@ app.factory("TagService", function($resource) {
     // - http://youtu.be/[ID]
     // - http://www.youtube.com/watch?v=[ID]
     ,parseYoutube : function(content){
-    	var youtubeRegex = /\[url\](http|https):\/\/(youtu\.be\/|www\.youtube\.com\/watch\?v=)(.+)\[\/url\]/g;
+    	var youtubeRegex = /\[url\](http|https):\/\/(youtu\.be\/|www\.youtube\.com\/watch\?v=)(\w+)\[\/url\]/g;
     	return content.replace(youtubeRegex, function(match, httpProtocol, domain, id) {
           return '<iframe id="ytplayer" type="text/html" class="youtubePreview" src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe><br>' + '<a href="https://' + domain + id + '">https://' + domain + id + '</a>';
       });
@@ -291,10 +291,7 @@ app.controller("PostCtrl", [
       msg.messageBody = $sce.trustAsHtml(TagService.parseURL(TagService.parseYoutube(msg.messageBody)));
       console.log(msg.messageBody.toString());
     }
-    $scope.pageValue = vm.post.currentPages; 
-    $scope.pageChange = function(messageId, pageValue){
-     $state.go('post', {messageId: messageId, page: pageValue})
-    }
+    $scope.pageValue = vm.post.currentPages;
   
   }, function(response){
     $state.go('notFound');

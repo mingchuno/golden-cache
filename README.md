@@ -23,6 +23,25 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 4. unzip the pacakge, make sure `bin/golden-cache` is executable
 5. run `sh golden-app.sh start`, it may need sudo since it need to bind to port 80
 
+# How to test?
+
+## Test Scala
+
+## Test Angular JS
+
+The Angualr JS uses [Jasmine](http://jasmine.github.io/1.3/introduction.html) for testing.
+The testing codes are written in **test/spec/*.js**
+
+If you encounter any problems related to karma in running `grunt test`, please install the following package:
+```
+npm install karma
+npm install phantomjs
+npm install jasmine-core
+```
+
+1. cd `ui`
+2. run `grunt test`
+
 # TODO
 
 - **UI enhance**
