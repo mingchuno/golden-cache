@@ -7,13 +7,19 @@ HKG is too slow. This is a cache backend + frontend written in Scala Play! and A
 
 # How to start dev?
 
-1. Backend: Install Scala(2.11.x), sbt(0.13.x), MongoDB(v3.x), Redis(v3.x)
-2. Frontend: Install node, npm, bower, grunt
-3. `cd ./ui` and `npm install` and `bower install`
-4. Run MongoDB which is used to save post
-5. Run Redis which is used to save history
-6. In project root, `sbt run` to start the server
-7. http://localhost:9000/ should work
+1. Backend: Install Scala(2.11.x), sbt(0.13.x), MongoDB(v3.x), Redis(v3.x).
+	1. `brew install scala sbt mongodb redis`.
+2. Frontend: Install node, npm, bower, grunt.
+	1. `brew install npm`.
+	2. `npm install -g bower grunt-cli`.
+3. `cd ./ui` and `npm install` and `bower install`.
+4. Run MongoDB which is used to save post.
+	1. Run `mongod`. It defaults to read `/data/db` and needs `rwx` permission.
+5. Run Redis which is used to save history.
+	1. Run `redis-server`.
+6. In project root, `sbt run` to start the server.
+	1. If it feels stuck, run `sbt run -v` for more details.
+7. `http://localhost:9000/` should work.
 
 # How to deploy?
 
@@ -34,12 +40,10 @@ The testing codes are written in **test/spec/*.js**
 
 If you encounter any problems related to karma in running `grunt test`, please install the following package:
 ```
-npm install karma
-npm install phantomjs
-npm install jasmine-core
+npm install karma phantomjs jasmine-core
 ```
 
-1. cd `ui`
+1. `cd ui`
 2. run `grunt test`
 
 # TODO
