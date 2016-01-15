@@ -17,9 +17,9 @@ describe('Controller: TopicsCtrl', function () {
     });
   }));
 
-  /* Comment out first for testing right now 
+  /* Comment out first for testing right now
   it('should attach a list of awesomeThings to the scope', function () {
      expect(MainCtrl.awesomeThings.length).toBe(3);
   }); */
-  
+
 });
