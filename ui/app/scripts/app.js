@@ -24,9 +24,9 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
 
   $stateProvider
 
-    .state('topics', { 
-      url: '/topics/:channel/:page', 
-      templateUrl: '/views/topics.html', 
+    .state('topics', {
+      url: '/topics/:channel/:page',
+      templateUrl: '/views/topics.html',
       controller: 'TopicsCtrl',
       params: {
         page: "1"
@@ -43,15 +43,15 @@ app.config(['$urlRouterProvider', '$stateProvider', '$httpProvider', function ($
       templateUrl: '/views/about.html'
     })
 
-    .state('notFound', { 
-      url: '/404', 
+    .state('notFound', {
+      url: '/404',
       templateUrl: '/404.html'
     })
 
     .state('post', {
-      url: '/post/:messageId/:page', 
-      templateUrl: '/views/post.html',  
-      controller: 'PostCtrl', 
+      url: '/post/:messageId/:page',
+      templateUrl: '/views/post.html',
+      controller: 'PostCtrl',
       controllerAs: 'vm',
       params: {
         page: "1",
@@ -121,7 +121,7 @@ app.factory("ChannelService", function() {
 app.factory("TagService", function($resource) {
   return {
     // Extract the url inside [url][/url]
-    // Replace the whole tag with hyerlink 
+    // Replace the whole tag with hyerlink
     parseURL : function(content){
     	var urlRegex = /\[url\]([^\[\]]+)\[\/url\]/g;
     	return content.replace(urlRegex, function(match, link) {
@@ -147,11 +147,11 @@ app.factory("TagService", function($resource) {
  * The home controller.
  */
 app.controller('TopicsCtrl', [
-  '$http', 
-  '$scope', 
-  '$state', 
-  '$window', 
-  'ChannelService', 
+  '$http',
+  '$scope',
+  '$state',
+  '$window',
+  'ChannelService',
   'TitleService',
   'HistoryService',
   function($http, $scope, $state, $window, ChannelService, TitleService, HistoryService) {
@@ -237,13 +237,13 @@ app.controller('TopicsCtrl', [
  * The post controller
  */
 app.controller("PostCtrl", [
-  '$scope', 
-  '$http', 
-  '$state', 
-  '$window', 
+  '$scope',
+  '$http',
+  '$state',
+  '$window',
   '$sce',
-  'TitleService', 
-  'ChannelService', 
+  'TitleService',
+  'ChannelService',
   'TagService',
   function($scope, $http, $state, $window, $sce, TitleService, ChannelService, TagService) {
 
@@ -281,8 +281,8 @@ app.controller("PostCtrl", [
     });
 
     $window.document.title = response.data.messageTitle + TitleService.getDefaultTitle();
-    vm.post = response.data;  
-    
+    vm.post = response.data;
+
     // TAG
     for (var i = 0; i < vm.post.messages.length; i++ ){
       var msg = vm.post.messages[i];
@@ -292,7 +292,7 @@ app.controller("PostCtrl", [
       console.log(msg.messageBody.toString());
     }
     $scope.pageValue = vm.post.currentPages;
-  
+
   }, function(response){
     $state.go('notFound');
   });
