@@ -1,9 +1,32 @@
 sudo: false
-language: scala
+
+language: 
+ - scala
+ - node_js
+
 jdk: 
  - oraclejdk8
+
 scala: 
  - 2.11.7
+
+node_js:
+  - "4"
+
 services:
   - mongodb
   - redis
+
+before_install: npm install -g grunt-cli bower
+
+install: 
+  - npm install
+  - sbt "npm install" "bower install"
+
+after_success: sbt dist
+
+addons:
+  artifacts: true
+  paths:
+    - ./target/universal/*.zip
+  s3_region: "ap-southeast-1"
