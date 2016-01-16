@@ -30,3 +30,8 @@ addons:
   paths:
     - ./target/universal/*.zip
   s3_region: "ap-southeast-1"
+
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.ivy2
