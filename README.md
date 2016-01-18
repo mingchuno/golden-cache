@@ -1,6 +1,8 @@
 HKG cache
 =====================================
 
+[![Join the chat at https://gitter.im/mingchuno/golden-cache](https://badges.gitter.im/mingchuno/golden-cache.svg)](https://gitter.im/mingchuno/golden-cache?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/mingchuno/golden-cache.svg?branch=develop)](https://travis-ci.org/mingchuno/golden-cache)
 
 HKG is too slow. This is a cache backend + frontend written in Scala Play! and AngularJs
