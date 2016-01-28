@@ -97,6 +97,7 @@ app.factory("ChannelService", function() {
     {c: "VI",d: "影視台"},
     {c: "DC",d: "攝影台"},
     {c: "ST",d: "學術台"},
+    {c: "SC",d: "校園台"},
     {c: "WK",d: "上班台"},
     {c: "TS",d: "汽車台"},
     {c: "RA",d: "電　台"},
