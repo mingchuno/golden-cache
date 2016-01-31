@@ -145,6 +145,27 @@ app.factory("TagService", function($resource) {
 });
 
 /**
+* HKGConfig Service
+* Right now it only stores fontClass, don't need to adjust the font size post by post
+*/
+app.factory("HKGConfigService", function($resource) {
+  var fontClassKey = 'fontClass';
+    
+  // default config
+  var config = {};  
+  config[fontClassKey] = 'normal-font';
+
+  return {
+    setFontClass : function (newfontClass){
+      config[fontClassKey] = newfontClass;
+    },
+    getFontClass : function (){
+      return config[fontClassKey];
+    }
+  }
+});
+
+/**
  * The home controller.
  */
 app.controller('TopicsCtrl', [
@@ -246,7 +267,8 @@ app.controller("PostCtrl", [
   'TitleService',
   'ChannelService',
   'TagService',
-  function($scope, $http, $state, $window, $sce, TitleService, ChannelService, TagService) {
+  'HKGConfigService',
+  function($scope, $http, $state, $window, $sce, TitleService, ChannelService, TagService, HKGConfigService) {
 
   $scope.vm = this;
   var vm = $scope.vm;
@@ -259,7 +281,14 @@ app.controller("PostCtrl", [
     console.log('Page changed to: ' + vm.post.currentPages);
     $state.go('post', {messageId: vm.post.messageId, page: vm.post.currentPages});
   };
-
+  
+  $scope.setFontClass = function(newfontClass){
+    HKGConfigService.setFontClass(newfontClass);
+  };
+  $scope.getFontClass = function(){
+    return HKGConfigService.getFontClass();
+  };
+  
   $http({
     url: "/api/v1/post",
     method: 'GET',

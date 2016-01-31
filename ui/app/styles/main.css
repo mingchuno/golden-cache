@@ -5,7 +5,7 @@ img {
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 blockquote {
-  font-size: 14px;
+  font-size: inherit;
   margin-bottom: 10px;
   padding: 10px 15px;
 }
@@ -19,7 +19,7 @@ blockquote {
 }
 
 .normal-font {
-
+  font-size: 14px;
 }
 
 .big-font {
