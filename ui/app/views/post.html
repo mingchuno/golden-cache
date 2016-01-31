@@ -11,10 +11,10 @@
     <div class="col-md-4 text-right">
       <!-- Font -->
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='small-font'">細</button>
-        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='normal-font'">正常</button>
-        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='big-font'">大</button>
-        <button type="button" class="btn btn-default btn-sm" ng-click="fontClass='ultra-font'">超大</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="setFontClass('small-font')">細</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="setFontClass('normal-font')">正常</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="setFontClass('big-font')">大</button>
+        <button type="button" class="btn btn-default btn-sm" ng-click="setFontClass('ultra-font')">超大</button>
       </div>
     </div>
   </div>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div ng-class="fontClass" ng-bind-html="message.messageBody"></div>
+    <div ng-class="getFontClass()" ng-bind-html="message.messageBody"></div>
   </li>
 </ul>
 
