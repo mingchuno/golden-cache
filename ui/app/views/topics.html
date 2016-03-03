@@ -33,7 +33,7 @@
 
       <uib-tab heading="轉台">
         <ul class="list-group">
-          <li class="list-group-item" ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c})'><p class="text-center">{{channel.d}}</p></a></li>
+          <li class="list-group-item" ng-repeat="channel in channels"><a ui-sref='topics({channel:channel.c, page:1})'><p class="text-center">{{channel.d}}</p></a></li>
         </ul>
       </uib-tab>
       <uib-tab heading="歷史">
