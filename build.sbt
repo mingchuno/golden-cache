@@ -25,7 +25,8 @@ libraryDependencies ++= Seq(
   "net.debasishg" %% "redisclient" % "3.0",
   "org.scalatest" %% "scalatest" % "2.2.5" % "test",
   "org.scalamock" %%  "scalamock-scalatest-support" % "3.2" % "test",
-  "com.typesafe.akka" %%  "akka-contrib" % "2.4.0" 
+  "com.typesafe.akka" %%  "akka-contrib" % "2.4.2",
+  "com.typesafe.akka" %% "akka-agent" % "2.4.2"
 )
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
