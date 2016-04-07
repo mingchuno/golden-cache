@@ -6,6 +6,7 @@ import play.api.Logger
 import play.api.Play.current
 import play.api.libs.json.{JsError, JsSuccess}
 import play.api.libs.ws.WS
+import utils.HKGHash
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -13,11 +14,14 @@ import scala.util.{Failure, Success}
 
 trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
   // move endpoint later
-  private val apiEndpoint = "http://apps.hkgolden.com"
+  private val apiEndpoint = "http://android-1-2.hkgolden.com"
 
   def getTopis(page: Int = 1, channel: String = "BW"): Future[Option[Topics]] = {
-    val filter = if (channel == "BW") "Y" else "N" 
-    WS.url(s"$apiEndpoint/android_api/v_1_0/newTopics.aspx?type=$channel&returntype=json&page=$page&filtermode=$filter&sensormode=N")
+    val filter = "N"
+    val key = HKGHash.getHash(channel, page, filter, "N")
+    val url:String = s"$apiEndpoint/newTopics.aspx?s=$key&type=$channel&returntype=json&page=$page&filtermode=$filter&sensormode=N&user_id=0&block=Y"
+
+    WS.url(url)
       .get().map { response =>
       val json = response.json
       if ((json \ "success").as[Boolean]) {
