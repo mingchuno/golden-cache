@@ -2,7 +2,7 @@ package service
 
 import dao.hkg.PostCollection
 import models.hkg._
-import utils.HKGHash
+import utils.HKGApi2
 
 import play.api.Logger
 import play.api.Play.current
@@ -15,15 +15,12 @@ import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
-  // move endpoint later
-  private val apiEndpoint = "http://android-1-2.hkgolden.com"
 
   def getTopis(page: Int = 1, channel: String = "BW"): Future[Option[Topics]] = {
     val filter = "N"
-    val key = HKGHash.getHash(channel, page, filter, "N")
-    val url:String = s"$apiEndpoint/newTopics.aspx?s=$key&type=$channel&returntype=json&page=$page&filtermode=$filter&sensormode=N&user_id=0&block=Y"
+    val sensor = "N"
 
-    WS.url(url)
+    WS.url(HKGApi2.getTopicUrl(channel, page, filter, sensor))
       .get().map { response =>
       val json = response.json
       if ((json \ "success").as[Boolean]) {
@@ -45,10 +42,10 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
     Logger.debug(s"grabNewPost: $messageId and page $page")
     val filter = "N"
     val sensor = "N"
-    var url:String = s"$apiEndpoint/newView.aspx"
-    val key = HKGHash.getTopicHash(messageId, (page-1) * 25, 0, filter, sensor)
+    val key = HKGApi2.getPostHash(messageId, (page-1) * 25, 0, filter, sensor)
 
-    val data = Map("filtermode" -> Seq(filter),
+    val data = Map(
+      "filtermode" -> Seq(filter),
       "sensormode" -> Seq(sensor),
       "s" -> Seq(key),
       "returntype" -> Seq("json"),
@@ -58,7 +55,7 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
       "user_id" -> Seq(0.toString)
     )
 
-    WS.url(url)
+    WS.url(HKGApi2.getPostUrl())
       .post(data)
       .map { response =>
 
