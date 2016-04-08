@@ -7,8 +7,8 @@ import utils.HKGDataConverter
  * Message_ID & Current_Pages is the key!
  */
 case class Post(messageId:Int, 
-                messageTitle: String, 
-                postDate: Option[DateTime], 
+                messageTitle: String,
+                messageDate: Option[DateTime],
                 lastReplyDate: Option[DateTime], 
                 totalReplies: Int, 
                 ratingGood:Int, 
@@ -27,7 +27,7 @@ object Post extends HKGDataConverter {
   def parseHKGFormat(
       messageId:Int, 
       messageTitle: String, 
-      postDate: String, 
+      messageDate: String,
       lastReplyDate: String, 
       totalReplies: Int, 
       ratingGood:Int, 
@@ -41,7 +41,7 @@ object Post extends HKGDataConverter {
     new Post(
       messageId = messageId, 
       messageTitle = messageTitle, 
-      postDate = convertHKGDateToDateTime(postDate), 
+      messageDate = convertHKGDateToDateTime(messageDate),
       lastReplyDate = convertHKGDateToDateTime(lastReplyDate), 
       totalReplies = totalReplies, 
       ratingGood = ratingGood, 

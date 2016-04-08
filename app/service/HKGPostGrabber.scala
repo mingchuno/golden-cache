@@ -2,22 +2,25 @@ package service
 
 import dao.hkg.PostCollection
 import models.hkg._
+import utils.HKGApi2
+
 import play.api.Logger
 import play.api.Play.current
 import play.api.libs.json.{JsError, JsSuccess}
-import play.api.libs.ws.WS
+import play.api.libs.ws._
+import play.api.libs.json._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 
 trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
-  // move endpoint later
-  private val apiEndpoint = "http://apps.hkgolden.com"
 
   def getTopis(page: Int = 1, channel: String = "BW"): Future[Option[Topics]] = {
-    val filter = if (channel == "BW") "Y" else "N" 
-    WS.url(s"$apiEndpoint/android_api/v_1_0/newTopics.aspx?type=$channel&returntype=json&page=$page&filtermode=$filter&sensormode=N")
+    val filter = "N"
+    val sensor = "N"
+
+    WS.url(HKGApi2.getTopicUrl(channel, page, filter, sensor))
       .get().map { response =>
       val json = response.json
       if ((json \ "success").as[Boolean]) {
@@ -37,9 +40,25 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
 
   private def grabNewPost(messageId: Int, page: Int): Future[Option[Post]] = {
     Logger.debug(s"grabNewPost: $messageId and page $page")
+    val filter = "N"
+    val sensor = "N"
+    val key = HKGApi2.getPostHash(messageId, (page-1) * 25, 0, filter, sensor)
 
-    WS.url(s"$apiEndpoint/android_api/v_1_0/newView.aspx?message=$messageId&returntype=json&filtermode=N&sensormode=N&page=$page")
-      .get().map { response =>
+    val data = Map(
+      "filtermode" -> Seq(filter),
+      "sensormode" -> Seq(sensor),
+      "s" -> Seq(key),
+      "returntype" -> Seq("json"),
+      "limit" -> Seq(26.toString),
+      "start" -> Seq(((page-1) * 25).toString),
+      "message" -> Seq(messageId.toString),
+      "user_id" -> Seq(0.toString)
+    )
+
+    WS.url(HKGApi2.getPostUrl())
+      .post(data)
+      .map { response =>
+
         val json = response.json
         if ((json \ "success").as[Boolean]) {
           json.validate[Post] match {
