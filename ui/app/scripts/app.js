@@ -150,9 +150,9 @@ app.factory("TagService", function($resource) {
 */
 app.factory("HKGConfigService", function($resource) {
   var fontClassKey = 'fontClass';
-    
+
   // default config
-  var config = {};  
+  var config = {};
   config[fontClassKey] = 'normal-font';
 
   return {
@@ -281,14 +281,14 @@ app.controller("PostCtrl", [
     console.log('Page changed to: ' + vm.post.currentPages);
     $state.go('post', {messageId: vm.post.messageId, page: vm.post.currentPages});
   };
-  
+
   $scope.setFontClass = function(newfontClass){
     HKGConfigService.setFontClass(newfontClass);
   };
   $scope.getFontClass = function(){
     return HKGConfigService.getFontClass();
   };
-  
+
   $http({
     url: "/api/v1/post",
     method: 'GET',
@@ -319,8 +319,9 @@ app.controller("PostCtrl", [
       // ngSanitize will just delete iframe..
       // use trustAsHtml?
       msg.messageBody = $sce.trustAsHtml(TagService.parseURL(TagService.parseYoutube(msg.messageBody)));
-      console.log(msg.messageBody.toString());
+      //console.log(msg.messageBody.toString());
     }
+    vm.post.currentPages =$state.params.page;
     $scope.pageValue = vm.post.currentPages;
 
   }, function(response){
