@@ -2,6 +2,9 @@ package utils
 
 import play.api.Logger
 
+/**
+  *  HKGolden API 2 as documented at https://github.com/mingchuno/golden-cache/issues/2
+  */
 object HKGApi2 {
   private val apiEndpoint = "http://android-1-2.hkgolden.com"
 
