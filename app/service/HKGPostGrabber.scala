@@ -89,7 +89,7 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
   }
 
   def getPostFromDBOrFallBack(messageId: Int, page: Int): Future[Option[Post]] = {
-    getPostByIdAndPage(messageId, page) match {
+    getPostByIdAndPage(messageId, page - 1) match {
       case Some(post) if post.currentPages < post.totalPages =>
         // must be history
         Future.successful(Some(post))
