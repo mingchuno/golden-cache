@@ -1,9 +1,10 @@
 <div class="page-header">
-  
+
   <div class="row">
-    <div class="col-md-8">      
+    <div class="col-md-8">
       <ol class="visible-md visible-lg breadcrumb">
-        <li><a ui-sref='topics({channel: "BW"})'>高登主頁</a></li>
+        <li><a href='http://forum.hkgolden.com/view.aspx?type=BW&message={{vm.post.messageId}}' target="_blank">原 Post </a></li>
+        <li><a ui-sref='topics({channel: "BW"})'>主頁</a></li>
         <li><a ui-sref='topics({channel: vm.lastChannel})'>{{vm.channelDisplayName}}</a></li>
         <li>{{vm.post.messageTitle}}</li>
       </ol>
