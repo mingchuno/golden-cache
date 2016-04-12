@@ -17,7 +17,7 @@ import scala.util.{Failure, Success}
 trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
 
   def getTopis(page: Int = 1, channel: String = "BW"): Future[Option[Topics]] = {
-    val filter = "N"
+    val filter = if (channel == "BW") "Y" else "N"
     val sensor = "N"
 
     WS.url(HKGApi2.getTopicUrl(channel, page, filter, sensor))
