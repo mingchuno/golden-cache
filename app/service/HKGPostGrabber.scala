@@ -80,7 +80,8 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
     Logger.info(s"going to grab new post $messageId and page $page")
     grabNewPost(messageId, page).andThen {
       case Success(Some(post)) =>
-        upsertPost(post)
+        // fix golden api currentPages not work
+        upsertPost(post.copy(currentPages = page))
       case Success(None) =>
         Logger.info(s"cannot load this post $messageId and page $page")
       case Failure(e) =>
@@ -89,7 +90,7 @@ trait HKGPostGrabber extends GoldenPostJsonConverter with PostCollection {
   }
 
   def getPostFromDBOrFallBack(messageId: Int, page: Int): Future[Option[Post]] = {
-    getPostByIdAndPage(messageId, page - 1) match {
+    getPostByIdAndPage(messageId, page) match {
       case Some(post) if post.currentPages < post.totalPages =>
         // must be history
         Future.successful(Some(post))
