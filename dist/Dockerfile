@@ -1,8 +1,6 @@
-FROM java
+FROM java:8-jre
 
 COPY . /code
-
-VOLUME /code
 
 WORKDIR /code
 
